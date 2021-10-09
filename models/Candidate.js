@@ -15,12 +15,6 @@ const CandidateSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    votes: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Vote',
-      },
-    ],
   },
   {
     timestamps: true,
@@ -33,6 +27,16 @@ CandidateSchema.pre('save', function (next) {
   this.fullName = `${this.firstName} ${this.lastName}`;
 
   next();
+});
+
+CandidateSchema.pre('remove', async function () {
+  await mongoose.model('Vote').deleteMany({ candidate: this._id });
+});
+
+CandidateSchema.virtual('votes', {
+  ref: 'Vote',
+  localField: '_id',
+  foreignField: 'candidate',
 });
 
 const Candidate = mongoose.model('Candidate', CandidateSchema);

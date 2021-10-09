@@ -2,7 +2,9 @@ import asyncHandler from 'express-async-handler';
 import Candidate from '../models/Candidate.js';
 
 const getCandidates = asyncHandler(async (req, res, next) => {
-  const candidates = await Candidate.find({});
+  const candidates = await Candidate.find({}).populate({
+    path: 'votes',
+  });
 
   res.status(200).json(candidates);
 });
@@ -10,7 +12,13 @@ const getCandidates = asyncHandler(async (req, res, next) => {
 const getCandidateById = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
 
-  const candidate = await Candidate.findById(id);
+  const candidate = await Candidate.findById(id).populate({
+    path: 'votes',
+    populate: {
+      path: 'voter',
+      select: 'fullName email',
+    },
+  });
 
   if (candidate) {
     res.status(200).json(candidate);
@@ -57,12 +65,14 @@ const updateCandidateById = asyncHandler(async (req, res, next) => {
 });
 
 const deleteCandidateById = asyncHandler(async (req, res, next) => {
-  const deletedCandidate = await Candidate.findByIdAndDelete(req.params.id);
+  const candidate = await Candidate.findById(req.params.id);
 
-  if (!deletedCandidate) {
+  if (!candidate) {
     res.status(400);
     throw new Error('Candidate not found');
   }
+
+  const deletedCandidate = await candidate.remove();
 
   res.status(200).json(deletedCandidate);
 });
@@ -72,5 +82,5 @@ export {
   createCandidate,
   getCandidateById,
   updateCandidateById,
-  deleteCandidateById
+  deleteCandidateById,
 };
