@@ -7,6 +7,7 @@ import connectDB from './config/db.js';
 import notFound from './middleware/notFound.js';
 import errorHandler from './middleware/errorHandler.js';
 import userRoutes from './routes/user.js';
+import profileRoutes from './routes/profile.js';
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ if (process.env.NODE_ENV !== 'production') {
 const PORT = process.env.PORT || 5001;
 
 app.use('/api/users', userRoutes);
+app.use('/api/profile', profileRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

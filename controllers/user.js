@@ -20,6 +20,18 @@ const getUserById = asyncHandler(async (req, res, next) => {
   }
 });
 
+const getCurrentUserProfile = asyncHandler(async (req, res, next) => {
+  console.log(req.user)
+  const user = await User.findById(req.user.id.toString()).select('-password');
+
+  if (!user) {
+    res.status(404);
+    throw new Error('User not found');
+  } else {
+    res.status(200).json(user);
+  }
+});
+
 const registerUser = asyncHandler(async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body;
 
@@ -57,4 +69,10 @@ const loginUser = asyncHandler(async (req, res, next) => {
   res.status(200).json({ token });
 });
 
-export { getUsers, registerUser, getUserById, loginUser };
+export {
+  getUsers,
+  registerUser,
+  getUserById,
+  loginUser,
+  getCurrentUserProfile,
+};
