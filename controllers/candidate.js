@@ -56,9 +56,21 @@ const updateCandidateById = asyncHandler(async (req, res, next) => {
   res.status(200).json(updatedCandidate);
 });
 
+const deleteCandidateById = asyncHandler(async (req, res, next) => {
+  const deletedCandidate = await Candidate.findByIdAndDelete(req.params.id);
+
+  if (!deletedCandidate) {
+    res.status(400);
+    throw new Error('Candidate not found');
+  }
+
+  res.status(200).json(deletedCandidate);
+});
+
 export {
   getCandidates,
   createCandidate,
   getCandidateById,
   updateCandidateById,
+  deleteCandidateById
 };

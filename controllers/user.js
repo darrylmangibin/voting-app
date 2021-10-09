@@ -12,12 +12,12 @@ const getUserById = asyncHandler(async (req, res, next) => {
 
   const user = await User.findById(id).select('-password');
 
-  if (user) {
-    res.status(200).json(user);
-  } else {
+  if (!user) {
     res.status(404);
     throw new Error('User not found');
   }
+
+  res.status(200).json(user);
 });
 
 const getCurrentUserProfile = asyncHandler(async (req, res, next) => {
@@ -27,9 +27,9 @@ const getCurrentUserProfile = asyncHandler(async (req, res, next) => {
   if (!user) {
     res.status(404);
     throw new Error('User not found');
-  } else {
-    res.status(200).json(user);
   }
+
+  res.status(200).json(user);
 });
 
 const updateCurrentUserProfile = asyncHandler(async (req, res, next) => {
@@ -37,33 +37,33 @@ const updateCurrentUserProfile = asyncHandler(async (req, res, next) => {
 
   const user = await User.findById(req.user.id);
 
-  if (user) {
-    user.firstName = firstName || user.firstName;
-    user.lastName = lastName || user.lastName;
-    user.email = email || user.email;
-
-    if (password) {
-      user.password = password;
-    }
-
-    const updatedUser = await user.save();
-
-    res.status(200).json(updatedUser);
-  } else {
+  if (!user) {
     res.status(404);
     throw new Error('User not found');
   }
+
+  user.firstName = firstName || user.firstName;
+  user.lastName = lastName || user.lastName;
+  user.email = email || user.email;
+
+  if (password) {
+    user.password = password;
+  }
+
+  const updatedUser = await user.save();
+
+  res.status(200).json(updatedUser);
 });
 
 const deleteCurrentUserProfile = asyncHandler(async (req, res, next) => {
   const deletedUser = await User.findByIdAndDelete(req.user.id);
 
-  if (deletedUser) {
-    res.status(200).json(deletedUser);
-  } else {
+  if (!deletedUser) {
     res.status(400);
     throw new Error('User not found');
   }
+
+  res.status(200).json(deletedUser);
 });
 
 const registerUser = asyncHandler(async (req, res, next) => {
@@ -78,14 +78,14 @@ const registerUser = asyncHandler(async (req, res, next) => {
 
   let user = await User.create({ firstName, lastName, email, password });
 
-  if (user) {
-    const token = user.generateToken();
-
-    res.status(201).json({ token });
-  } else {
+  if (!user) {
     res.status(400);
     throw new Error('Invalid user data');
   }
+
+  const token = user.generateToken();
+
+  res.status(201).json({ token });
 });
 
 const loginUser = asyncHandler(async (req, res, next) => {
@@ -110,5 +110,5 @@ export {
   loginUser,
   getCurrentUserProfile,
   updateCurrentUserProfile,
-  deleteCurrentUserProfile
+  deleteCurrentUserProfile,
 };
