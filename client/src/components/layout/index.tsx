@@ -26,7 +26,7 @@ const MiniDrawer: FC = ({ children }) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', background: '#f5f5f5', minHeight: '100vh' }}>
       <AppBar position='fixed' open={open}>
         <Toolbar>
           <IconButton

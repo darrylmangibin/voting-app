@@ -1,7 +1,9 @@
 import { FC } from 'react';
 
+import VotersTable from 'components/voters-table';
+
 const VotersPage: FC = () => {
-  return <div>Voters Page</div>;
+  return <VotersTable />;
 };
 
 export default VotersPage;

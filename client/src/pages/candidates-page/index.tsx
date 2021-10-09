@@ -1,7 +1,9 @@
 import { FC } from 'react';
 
+import CandidatesTable from 'components/candidates-table';
+
 const CandidatesPage: FC = () => {
-  return <div>Candidates Page</div>;
+  return <CandidatesTable />;
 };
 
 export default CandidatesPage;
