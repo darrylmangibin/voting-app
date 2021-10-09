@@ -21,7 +21,7 @@ const getUserById = asyncHandler(async (req, res, next) => {
 });
 
 const getCurrentUserProfile = asyncHandler(async (req, res, next) => {
-  console.log(req.user)
+  console.log(req.user);
   const user = await User.findById(req.user.id.toString()).select('-password');
 
   if (!user) {
@@ -29,6 +29,29 @@ const getCurrentUserProfile = asyncHandler(async (req, res, next) => {
     throw new Error('User not found');
   } else {
     res.status(200).json(user);
+  }
+});
+
+const updateCurrentUserProfile = asyncHandler(async (req, res, next) => {
+  const { firstName, lastName, email, password } = req.body;
+
+  const user = await User.findById(req.user.id);
+
+  if (user) {
+    user.firstName = firstName || user.firstName;
+    user.lastName = lastName || user.lastName;
+    user.email = email || user.email;
+
+    if (password) {
+      user.password = password;
+    }
+
+    const updatedUser = await user.save();
+
+    res.status(200).json(updatedUser);
+  } else {
+    res.status(404);
+    throw new Error('No user found');
   }
 });
 
@@ -75,4 +98,5 @@ export {
   getUserById,
   loginUser,
   getCurrentUserProfile,
+  updateCurrentUserProfile,
 };
