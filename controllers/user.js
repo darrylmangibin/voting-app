@@ -51,7 +51,18 @@ const updateCurrentUserProfile = asyncHandler(async (req, res, next) => {
     res.status(200).json(updatedUser);
   } else {
     res.status(404);
-    throw new Error('No user found');
+    throw new Error('User not found');
+  }
+});
+
+const deleteCurrentUserProfile = asyncHandler(async (req, res, next) => {
+  const deletedUser = await User.findByIdAndDelete(req.user.id);
+
+  if (deletedUser) {
+    res.status(200).json(deletedUser);
+  } else {
+    res.status(400);
+    throw new Error('User not found');
   }
 });
 
@@ -99,4 +110,5 @@ export {
   loginUser,
   getCurrentUserProfile,
   updateCurrentUserProfile,
+  deleteCurrentUserProfile
 };
