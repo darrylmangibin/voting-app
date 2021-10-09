@@ -4,6 +4,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import App from 'App';
 
 import theme from 'theme';
+import 'stylesheets/main.css';
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
