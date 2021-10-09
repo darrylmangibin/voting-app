@@ -10,6 +10,12 @@ const CandidateSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    vote: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Vote',
+      },
+    ],
   },
   {
     timestamps: true,
