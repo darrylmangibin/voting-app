@@ -8,6 +8,7 @@ import notFound from './middleware/notFound.js';
 import errorHandler from './middleware/errorHandler.js';
 import userRoutes from './routes/user.js';
 import profileRoutes from './routes/profile.js';
+import candidateRoutes from './routes/candidate.js';
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ const PORT = process.env.PORT || 5001;
 
 app.use('/api/users', userRoutes);
 app.use('/api/profile', profileRoutes);
+app.use('/api/candidates', candidateRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

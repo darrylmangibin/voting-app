@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const CandidateSchema = new mongoose.Schema(
   {
-    fistName: {
+    firstName: {
       type: String,
       required: true,
     },
@@ -10,7 +10,12 @@ const CandidateSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    vote: [
+    shortName: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    votes: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Vote',
@@ -23,6 +28,12 @@ const CandidateSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+CandidateSchema.pre('save', function (next) {
+  this.fullName = `${this.firstName} ${this.lastName}`;
+
+  next();
+});
 
 const Candidate = mongoose.model('Candidate', CandidateSchema);
 
