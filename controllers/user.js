@@ -2,7 +2,9 @@ import asyncHandler from 'express-async-handler';
 import User from '../models/User.js';
 
 const getUsers = asyncHandler(async (req, res, next) => {
-  const users = await User.find({}).select('-password');
+  let users = await User.find({}).select('-password');
+
+  users = users.filter((user) => user.role !== 'admin');
 
   res.json(users);
 });
