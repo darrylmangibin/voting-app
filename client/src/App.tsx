@@ -9,6 +9,7 @@ import VotersPage from 'pages/voters-page';
 import ProfilePage from 'pages/profile-page';
 import CandidateDetailsPage from 'pages/candidate-details-page';
 import Layout from 'components/layout';
+import PrivateRoute from 'components/private-route';
 import * as routes from 'routes';
 import SnackbarNotification from 'components/snackbar-notification';
 
@@ -33,18 +34,18 @@ const App: FC = () => {
         <Route path={routes.LOGIN_ROUTE} component={LoginPage} exact />
         <Route path={routes.REGISTER_ROUTE} component={RegisterPage} exact />
         <Layout>
-          <Route
+          <PrivateRoute
             path={routes.CANDIDATES_ROUTE}
             component={CandidatesPage}
             exact
           />
-          <Route
+          <PrivateRoute
             path={routes.CANDIDATE_DETAILS_ROUTE}
             component={CandidateDetailsPage}
             exact
           />
-          <Route path={routes.VOTERS_ROUTE} component={VotersPage} exact />
-          <Route path={routes.PROFILE_ROUTE} component={ProfilePage} exact />
+          <PrivateRoute path={routes.VOTERS_ROUTE} component={VotersPage} exact />
+          <PrivateRoute path={routes.PROFILE_ROUTE} component={ProfilePage} exact />
         </Layout>
       </Switch>
       <SnackbarNotification

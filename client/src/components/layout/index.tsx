@@ -93,7 +93,14 @@ const MiniDrawer: FC = ({ children }) => {
               <MenuItem onClick={() => handleClose(routes.PROFILE_ROUTE)}>
                 Profile
               </MenuItem>
-              <MenuItem onClick={() => logoutUser()}>Log out</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  logoutUser();
+                  history.push(routes.LOGIN_ROUTE);
+                }}
+              >
+                Log out
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
