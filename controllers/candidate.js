@@ -4,6 +4,10 @@ import Candidate from '../models/Candidate.js';
 const getCandidates = asyncHandler(async (req, res, next) => {
   const candidates = await Candidate.find({}).populate({
     path: 'votes',
+    populate: {
+      path: 'voter',
+      select: '-password'
+    },
   });
 
   res.status(200).json(candidates);
@@ -16,7 +20,7 @@ const getCandidateById = asyncHandler(async (req, res, next) => {
     path: 'votes',
     populate: {
       path: 'voter',
-      select: 'fullName email',
+      select: '-password'
     },
   });
 
