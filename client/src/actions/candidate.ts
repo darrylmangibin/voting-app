@@ -69,7 +69,7 @@ export type CandidateUpdateAction =
   | CandidateUpdateActionFail
   | CandidateUpdateActionReset;
 
-  export interface CandidateDetailsActionRequest
+export interface CandidateDetailsActionRequest
   extends Action<typeof ActionTypes.CANDIDATE_DETAILS_REQUEST> {}
 
 export interface CandidateDetailsActionSuccess
@@ -90,4 +90,3 @@ export type CandidateDetailsAction =
   | CandidateDetailsActionSuccess
   | CandidateDetailsActionFail
   | CandidateDetailsActionReset;
-

@@ -23,7 +23,11 @@ const getUserById = asyncHandler(async (req, res, next) => {
 });
 
 const getCurrentUserProfile = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.user.id.toString()).select('-password');
+  const user = await User.findById(req.user.id.toString())
+    .select('-password')
+    .populate({
+      path: 'vote',
+    });
 
   if (!user) {
     res.status(404);

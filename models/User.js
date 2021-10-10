@@ -77,6 +77,13 @@ UserSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+UserSchema.virtual('vote', {
+  ref: 'Vote',
+  localField: '_id',
+  foreignField: 'voter',
+  justOne: true
+})
+
 const User = mongoose.model('User', UserSchema);
 
 export default User;

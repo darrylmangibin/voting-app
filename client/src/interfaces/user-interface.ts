@@ -1,3 +1,5 @@
+import { VoteInterface } from "interfaces";
+
 export enum UserRole {
   VOTER = 'voter',
   ADMIN = 'admin',
@@ -13,4 +15,5 @@ export interface UserInterface {
   updatedAt?: string;
   id?: string;
   fullName: string;
+  vote: VoteInterface | null
 }

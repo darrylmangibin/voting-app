@@ -1,5 +1,10 @@
 import { FC, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import LoginPage from 'pages/login-page';
@@ -44,10 +49,19 @@ const App: FC = () => {
             component={CandidateDetailsPage}
             exact
           />
-          <PrivateRoute path={routes.VOTERS_ROUTE} component={VotersPage} exact />
-          <PrivateRoute path={routes.PROFILE_ROUTE} component={ProfilePage} exact />
+          <PrivateRoute
+            path={routes.VOTERS_ROUTE}
+            component={VotersPage}
+            exact
+          />
+          <PrivateRoute
+            path={routes.PROFILE_ROUTE}
+            component={ProfilePage}
+            exact
+          />
         </Layout>
       </Switch>
+      <Redirect to={routes.LOGIN_ROUTE} />
       <SnackbarNotification
         message={message ?? ''}
         open={open}

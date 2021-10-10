@@ -5,6 +5,7 @@ import users from './data-seeder/user.js';
 import candidates from './data-seeder/candidate.js';
 import User from './models/User.js';
 import Candidate from './models/Candidate.js';
+import Vote from './models/Vote.js'
 import connectDB from './config/db.js';
 
 dotenv.config();
@@ -15,6 +16,7 @@ const importData = async () => {
   try {
     await User.deleteMany();
     await Candidate.deleteMany();
+    await Vote.deleteMany();
 
     await User.insertMany(users);
     await Candidate.insertMany(candidates);
@@ -31,6 +33,7 @@ const destroyData = async () => {
   try {
     await User.deleteMany();
     await Candidate.deleteMany();
+    await Vote.deleteMany();
 
     console.log('Data destroyed'.red.inverse);
     process.exit(0);

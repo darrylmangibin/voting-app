@@ -14,6 +14,7 @@ import {
   candidateUpdateReducer,
   candidateDetailsReducer,
 } from './candidate-reducer';
+import { voteCreateReducer } from './vote-reducer'
 import { snackbarReducer } from './snackbar-reducer';
 
 const reducers = combineReducers({
@@ -29,6 +30,8 @@ const reducers = combineReducers({
   candidateCreate: candidateCreateReducer,
   candidateUpdate: candidateUpdateReducer,
   candidateDetails: candidateDetailsReducer,
+  // VOTE
+  voteCreate: voteCreateReducer,
   // SNACKBAR
   snackbar: snackbarReducer,
 });
