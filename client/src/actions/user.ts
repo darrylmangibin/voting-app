@@ -89,3 +89,25 @@ export type UserProfileAction =
   | UserProfileActionSuccess
   | UserProfileActionFail
   | UserProfileActionReset;
+
+export interface UserProfileUpdateActionRequest
+  extends Action<typeof ActionTypes.USER_PROFILE_UPDATE_REQUEST> {}
+
+export interface UserProfileUpdateActionSuccess
+  extends Action<typeof ActionTypes.USER_PROFILE_UPDATE_SUCCESS> {
+  payload: UserInterface;
+}
+
+export interface UserProfileUpdateActionFail
+  extends Action<typeof ActionTypes.USER_PROFILE_UPDATE_FAIL> {
+  payload?: string;
+}
+
+export interface UserProfileUpdateActionReset
+  extends Action<typeof ActionTypes.USER_PROFILE_UPDATE_RESET> {}
+
+export type UserProfileUpdateAction =
+  | UserProfileUpdateActionRequest
+  | UserProfileUpdateActionSuccess
+  | UserProfileUpdateActionFail
+  | UserProfileUpdateActionReset;

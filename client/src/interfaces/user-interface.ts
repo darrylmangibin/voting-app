@@ -12,4 +12,5 @@ export interface UserInterface {
   createdAt?: string;
   updatedAt?: string;
   id?: string;
+  fullName: string;
 }

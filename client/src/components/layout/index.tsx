@@ -22,7 +22,8 @@ import {
 
 import { DrawerHeader, AppBar, Drawer } from './styled-components';
 import * as routes from 'routes';
-import { typedUseDispatch } from 'hooks/redux-hooks';
+import { typedUseDispatch, typedUseSelector } from 'hooks/redux-hooks';
+import { userAuthSelector } from 'selectors';
 
 const MiniDrawer: FC = ({ children }) => {
   const theme = useTheme();
@@ -30,6 +31,7 @@ const MiniDrawer: FC = ({ children }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const { logoutUser } = typedUseDispatch();
+  const { user } = typedUseSelector(userAuthSelector);
 
   const history = useHistory();
 
@@ -73,7 +75,7 @@ const MiniDrawer: FC = ({ children }) => {
               style={{ fontSize: 'inherit' }}
             >
               <AccountCircle />
-              User
+              {user?.firstName}
             </IconButton>
             <Menu
               id='menu-appbar'

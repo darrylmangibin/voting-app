@@ -25,6 +25,11 @@ import {
   UserProfileActionSuccess,
   UserProfileActionFail,
   UserProfileActionReset,
+  UserProfileUpdateAction,
+  UserProfileUpdateActionRequest,
+  UserProfileUpdateActionSuccess,
+  UserProfileUpdateActionFail,
+  UserProfileUpdateActionReset,
 } from 'actions';
 import { UserInterface } from 'interfaces';
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
@@ -218,6 +223,71 @@ export const userProfile =
 
 export const userProfileReset = (): UserProfileActionReset => ({
   type: ActionTypes.USER_PROFILE_RESET,
+});
+
+export const userProfileUpdate =
+  (
+    userData: Pick<UserInterface, 'firstName' | 'lastName' | 'email'> & {
+      password: string;
+    }
+  ): ThunkAction<
+    Promise<void>,
+    RootState,
+    undefined,
+    UserProfileUpdateAction | UserAuthActionSuccess | SnackBarActionOpen
+  > =>
+  async (dispatch) => {
+    const token = localStorage.getItem('token');
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      dispatch<UserProfileUpdateActionRequest>({
+        type: ActionTypes.USER_PROFILE_UPDATE_REQUEST,
+      });
+
+      const { data } = await axios.put<
+        typeof userData,
+        AxiosResponse<UserInterface>
+      >('/api/profile', userData, config);
+
+      dispatch<UserProfileUpdateActionSuccess>({
+        type: ActionTypes.USER_PROFILE_UPDATE_SUCCESS,
+        payload: data,
+      });
+
+      dispatch<UserAuthActionSuccess>({
+        type: ActionTypes.USER_AUTH_SUCCESS,
+        payload: data,
+      });
+
+      dispatch<SnackBarActionOpen>({
+        type: ActionTypes.SNACKBAR_OPEN,
+        message: 'Profile successfuly updated',
+        severity: 'success',
+      });
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+
+      dispatch<UserProfileUpdateActionFail>({
+        type: ActionTypes.USER_PROFILE_UPDATE_FAIL,
+        payload: error.response?.data.message || error.message,
+      });
+
+      dispatch<SnackBarActionOpen>({
+        type: ActionTypes.SNACKBAR_OPEN,
+        message: error.response?.data.message || error.message,
+        severity: 'error',
+      });
+    }
+  };
+
+export const userProfileUpdateReset = (): UserProfileUpdateActionReset => ({
+  type: ActionTypes.USER_PROFILE_UPDATE_RESET,
 });
 
 export const logoutUser = () => (dispatch: Dispatch) => {

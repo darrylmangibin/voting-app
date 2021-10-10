@@ -5,6 +5,7 @@ import {
   UserLoginAction,
   UserLogoutAction,
   UserProfileAction,
+  UserProfileUpdateAction,
   UserRegisterAction,
 } from 'actions';
 import * as ActionTypes from 'action-types';
@@ -142,3 +143,33 @@ export const userProfileReducer: Reducer<UserProfileState, UserProfileAction> =
         return state;
     }
   };
+
+interface UserProfileUpdateState extends UserInitialState {
+  user?: UserInterface;
+}
+
+export const userProfileUpdateReducer: Reducer<
+  UserProfileUpdateState,
+  UserProfileUpdateAction
+> = (state = {}, action) => {
+  switch (action.type) {
+    case ActionTypes.USER_PROFILE_UPDATE_REQUEST:
+      return {
+        loading: true,
+      };
+    case ActionTypes.USER_PROFILE_UPDATE_SUCCESS:
+      return {
+        loading: false,
+        user: action.payload,
+      };
+    case ActionTypes.USER_PROFILE_UPDATE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case ActionTypes.USER_PROFILE_UPDATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};

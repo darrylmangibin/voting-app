@@ -1,15 +1,27 @@
-import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button, Grid, Paper, TextField, Typography, Box } from '@mui/material';
 
 import DashboardHeader from 'components/dashboard-header';
 import Skeleton from 'components/skeleton';
 
 import { typedUseDispatch, typedUseSelector } from 'hooks/redux-hooks';
-import { userProfileSelector } from 'selectors';
+import { userProfileSelector, userProfileUpdateSelector } from 'selectors';
+import * as ActionTypes from 'action-types';
+import { SnackBarActionOpen } from 'actions';
 
 const ProfilePage: FC = () => {
-  const { userProfile, userProfileReset } = typedUseDispatch();
+  const dispatch = useDispatch();
+  const {
+    userProfile,
+    userProfileReset,
+    userProfileUpdate,
+    userProfileUpdateReset,
+  } = typedUseDispatch();
   const { user, loading } = typedUseSelector(userProfileSelector);
+  const { loading: userProfileUpdateLoading } = typedUseSelector(
+    userProfileUpdateSelector
+  );
 
   const [userProfileData, setUserProfileData] = useState({
     firstName: '',
@@ -24,7 +36,7 @@ const ProfilePage: FC = () => {
   const onChangeUserProfileDate = (e: ChangeEvent<HTMLInputElement>) => {
     setUserProfileData((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.name,
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -33,6 +45,7 @@ const ProfilePage: FC = () => {
 
     return () => {
       userProfileReset();
+      userProfileUpdateReset();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -48,6 +61,25 @@ const ProfilePage: FC = () => {
     }
   }, [user]);
 
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      return dispatch<SnackBarActionOpen>({
+        type: ActionTypes.SNACKBAR_OPEN,
+        message: 'Password do not match',
+        severity: 'error',
+      });
+    }
+
+    userProfileUpdate({
+      firstName,
+      lastName,
+      email,
+      password,
+    });
+  };
+
   return (
     <>
       <DashboardHeader sx={{ justifyContent: 'start' }}>
@@ -59,7 +91,12 @@ const ProfilePage: FC = () => {
             {loading ? (
               <Skeleton />
             ) : (
-              <Box component='form' noValidate autoComplete='off'>
+              <Box
+                component='form'
+                noValidate
+                autoComplete='off'
+                onSubmit={onSubmit}
+              >
                 <TextField
                   label='First Name'
                   variant='standard'
@@ -91,6 +128,7 @@ const ProfilePage: FC = () => {
                   label='Password'
                   variant='standard'
                   fullWidth
+                  type='password'
                   margin='normal'
                   name='password'
                   value={password}
@@ -99,6 +137,7 @@ const ProfilePage: FC = () => {
                 <TextField
                   label='Confirm Password'
                   variant='standard'
+                  type='password'
                   fullWidth
                   margin='normal'
                   name='confirmPassword'
@@ -109,6 +148,7 @@ const ProfilePage: FC = () => {
                   type='submit'
                   variant='contained'
                   sx={{ marginTop: '2rem' }}
+                  disabled={userProfileUpdateLoading}
                 >
                   Submit
                 </Button>
