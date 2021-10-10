@@ -2,7 +2,7 @@ import asyncHandler from 'express-async-handler';
 import Candidate from '../models/Candidate.js';
 
 const getCandidates = asyncHandler(async (req, res, next) => {
-  let candidates = await Candidate.find({}).populate({
+  const candidates = await Candidate.find({}).populate({
     path: 'votes',
   });
 
