@@ -20,8 +20,13 @@ import { userAuthSelector, userLoginSelector } from 'selectors';
 
 interface LoginPageProps extends RouteComponentProps {}
 
+interface LoginPageUserData {
+  email: string;
+  password: string;
+}
+
 const LoginPage: FC<LoginPageProps> = ({ history }) => {
-  const [userData, setUserData] = useState({
+  const [userData, setUserData] = useState<LoginPageUserData>({
     email: '',
     password: '',
   });

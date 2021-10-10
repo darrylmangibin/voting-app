@@ -19,8 +19,15 @@ import { userRegisterSelector, userAuthSelector } from 'selectors';
 
 interface RegisterPageProps extends RouteComponentProps {}
 
+interface RegisterPageUserData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
 const RegisterPage: FC<RegisterPageProps> = ({ history }) => {
-  const [userData, setUserData] = useState({
+  const [userData, setUserData] = useState<RegisterPageUserData>({
     firstName: '',
     lastName: '',
     email: '',

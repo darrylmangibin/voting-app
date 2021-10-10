@@ -10,6 +10,14 @@ import { userProfileSelector, userProfileUpdateSelector } from 'selectors';
 import * as ActionTypes from 'action-types';
 import { SnackBarActionOpen } from 'actions';
 
+interface ProfilePageUserProfileData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 const ProfilePage: FC = () => {
   const dispatch = useDispatch();
   const {
@@ -23,13 +31,14 @@ const ProfilePage: FC = () => {
     userProfileUpdateSelector
   );
 
-  const [userProfileData, setUserProfileData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
+  const [userProfileData, setUserProfileData] =
+    useState<ProfilePageUserProfileData>({
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    });
   const { firstName, lastName, email, password, confirmPassword } =
     userProfileData;
 

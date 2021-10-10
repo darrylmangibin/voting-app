@@ -111,3 +111,25 @@ export type UserProfileUpdateAction =
   | UserProfileUpdateActionSuccess
   | UserProfileUpdateActionFail
   | UserProfileUpdateActionReset;
+
+export interface UserListActionRequest
+  extends Action<typeof ActionTypes.USER_LIST_REQUEST> {}
+
+export interface UserListActionSuccess
+  extends Action<typeof ActionTypes.USER_LIST_SUCCESS> {
+  payload: UserInterface[];
+}
+
+export interface UserListActionFail
+  extends Action<typeof ActionTypes.USER_LIST_FAIL> {
+  payload?: string;
+}
+
+export interface UserListActionReset
+  extends Action<typeof ActionTypes.USER_LIST_RESET> {}
+
+export type UserListAction =
+  | UserListActionRequest
+  | UserListActionSuccess
+  | UserListActionFail
+  | UserListActionReset;

@@ -25,3 +25,8 @@ export const userProfileUpdateSelector = createSelector(
   [(state: RootState) => state],
   (state) => state.userProfileUpdate
 );
+
+export const userListSelector = createSelector(
+  [(state: RootState) => state],
+  (state) => state.userList
+);

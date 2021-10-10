@@ -30,6 +30,11 @@ import {
   UserProfileUpdateActionSuccess,
   UserProfileUpdateActionFail,
   UserProfileUpdateActionReset,
+  UserListAction,
+  UserListActionRequest,
+  UserListActionSuccess,
+  UserListActionFail,
+  UserListActionReset,
 } from 'actions';
 import { UserInterface } from 'interfaces';
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
@@ -288,6 +293,53 @@ export const userProfileUpdate =
 
 export const userProfileUpdateReset = (): UserProfileUpdateActionReset => ({
   type: ActionTypes.USER_PROFILE_UPDATE_RESET,
+});
+
+export const userList =
+  (): ThunkAction<
+    Promise<void>,
+    RootState,
+    undefined,
+    UserListAction | SnackBarActionOpen
+  > =>
+  async (dispatch) => {
+    const token = localStorage.getItem('token');
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      dispatch<UserListActionRequest>({
+        type: ActionTypes.USER_LIST_REQUEST,
+      });
+
+      const { data } = await axios.get<UserInterface[]>('/api/users', config);
+
+      dispatch<UserListActionSuccess>({
+        type: ActionTypes.USER_LIST_SUCCESS,
+        payload: data,
+      });
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+
+      dispatch<UserListActionFail>({
+        type: ActionTypes.USER_LIST_FAIL,
+        payload: error.response?.data.message || error.message,
+      });
+
+      dispatch<SnackBarActionOpen>({
+        type: ActionTypes.SNACKBAR_OPEN,
+        message: error.response?.data.message || error.message,
+        severity: 'error',
+      });
+    }
+  };
+
+export const userListReset = (): UserListActionReset => ({
+  type: ActionTypes.USER_LIST_RESET,
 });
 
 export const logoutUser = () => (dispatch: Dispatch) => {

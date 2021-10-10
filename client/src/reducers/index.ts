@@ -5,7 +5,8 @@ import {
   userAuthReducer,
   userLoginReducer,
   userProfileReducer,
-  userProfileUpdateReducer
+  userProfileUpdateReducer,
+  userListReducer,
 } from './user-reducers';
 import { snackbarReducer } from './snackbar-reducer';
 
@@ -15,6 +16,7 @@ const reducers = combineReducers({
   userLogin: userLoginReducer,
   userProfile: userProfileReducer,
   userProfileUpdate: userProfileUpdateReducer,
+  userList: userListReducer,
   snackbar: snackbarReducer,
 });
 

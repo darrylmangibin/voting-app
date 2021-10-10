@@ -1,7 +1,13 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Box, TextField, Button } from '@mui/material';
 
 const CandidateForm: FC = () => {
+  const [candidateData, setCandidateData] = useState({
+    firstName: '',
+    lastName: '',
+    shortName: '',
+  });
+
   return (
     <Box component='form' noValidate autoComplete='off'>
       <TextField
