@@ -22,11 +22,14 @@ import {
 
 import { DrawerHeader, AppBar, Drawer } from './styled-components';
 import * as routes from 'routes';
+import { typedUseDispatch } from 'hooks/redux-hooks';
 
 const MiniDrawer: FC = ({ children }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const { logoutUser } = typedUseDispatch();
 
   const history = useHistory();
 
@@ -90,7 +93,7 @@ const MiniDrawer: FC = ({ children }) => {
               <MenuItem onClick={() => handleClose(routes.PROFILE_ROUTE)}>
                 Profile
               </MenuItem>
-              <MenuItem>Log out</MenuItem>
+              <MenuItem onClick={() => logoutUser()}>Log out</MenuItem>
             </Menu>
           </Box>
         </Toolbar>

@@ -1,5 +1,6 @@
 import { ThunkAction } from 'redux-thunk';
 import axios from 'axios';
+import { Dispatch } from 'redux';
 
 import * as ActionTypes from 'action-types';
 import { RootState } from 'reducers';
@@ -125,3 +126,10 @@ export const registerUser =
 export const registerUserReset = (): RegisterUserActionReset => ({
   type: ActionTypes.REGISTER_USER_RESET,
 });
+
+export const logoutUser = () => (dispatch: Dispatch) => {
+  localStorage.removeItem('token');
+
+  dispatch({ type: ActionTypes.LOGOUT_USER });
+  dispatch({ type: ActionTypes.REGISTER_USER_RESET });
+};

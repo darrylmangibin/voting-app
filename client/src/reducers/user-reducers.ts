@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 
-import { AuthUserAction, RegisterUserAction } from 'actions';
+import { AuthUserAction, LogoutUserAction, RegisterUserAction } from 'actions';
 import * as ActionTypes from 'action-types';
 import { UserInterface } from 'interfaces';
 
@@ -15,10 +15,10 @@ interface AuthUserState extends UserInitialState {
   auth?: boolean;
 }
 
-export const authUserReducer: Reducer<AuthUserState, AuthUserAction> = (
-  state = {},
-  action
-) => {
+export const authUserReducer: Reducer<
+  AuthUserState,
+  AuthUserAction | LogoutUserAction
+> = (state = {}, action) => {
   switch (action.type) {
     case ActionTypes.AUTH_USER_REQUEST:
       return {
@@ -35,6 +35,8 @@ export const authUserReducer: Reducer<AuthUserState, AuthUserAction> = (
         loading: false,
         error: action.payload,
       };
+    case ActionTypes.LOGOUT_USER:
+      return {};
     default:
       return state;
   }

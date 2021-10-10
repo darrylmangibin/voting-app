@@ -23,7 +23,6 @@ const getUserById = asyncHandler(async (req, res, next) => {
 });
 
 const getCurrentUserProfile = asyncHandler(async (req, res, next) => {
-  console.log(req.user);
   const user = await User.findById(req.user.id.toString()).select('-password');
 
   if (!user) {

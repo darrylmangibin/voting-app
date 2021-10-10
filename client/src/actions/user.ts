@@ -42,3 +42,6 @@ export type AuthUserAction =
   | AuthUserActionRequest
   | AuthUserActionSuccess
   | AuthUserActionFail;
+
+  export interface LogoutUserAction
+  extends Action<typeof ActionTypes.LOGOUT_USER> {}
