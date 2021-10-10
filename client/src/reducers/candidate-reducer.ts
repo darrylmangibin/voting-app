@@ -2,7 +2,11 @@ import { Reducer } from 'redux';
 
 import * as ActionTypes from 'action-types';
 import { CandidateInterface } from 'interfaces';
-import { CandidateCreateAction, CandidateListAction } from 'actions/candidate';
+import {
+  CandidateCreateAction,
+  CandidateListAction,
+  CandidateUpdateAction,
+} from 'actions/candidate';
 
 interface CandidateInitialState {
   loading?: boolean;
@@ -71,6 +75,40 @@ export const candidateCreateReducer: Reducer<
         error: action.payload,
       };
     case ActionTypes.CANDIDATE_CREATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+interface CandidateUpdateState extends CandidateInitialState {
+  candidate?: CandidateInterface;
+}
+
+export const candidateUpdateReducer: Reducer<
+  CandidateUpdateState,
+  CandidateUpdateAction
+> = (state = {}, action) => {
+  switch (action.type) {
+    case ActionTypes.CANDIDATE_UPDATE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ActionTypes.CANDIDATE_UPDATE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        candidate: action.payload,
+        success: true,
+      };
+    case ActionTypes.CANDIDATE_UPDATE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case ActionTypes.CANDIDATE_UPDATE_RESET:
       return {};
     default:
       return state;

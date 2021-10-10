@@ -13,6 +13,11 @@ import {
   CandidateListActionRequest,
   CandidateListActionReset,
   CandidateListActionSuccess,
+  CandidateUpdateAction,
+  CandidateUpdateActionFail,
+  CandidateUpdateActionRequest,
+  CandidateUpdateActionReset,
+  CandidateUpdateActionSuccess,
 } from 'actions/candidate';
 import * as ActionTypes from 'action-types';
 import { CandidateInterface } from 'interfaces';
@@ -132,4 +137,73 @@ export const candidateCreate =
 
 export const canidateCreateReset = (): CandidateCreateActionReset => ({
   type: ActionTypes.CANDIDATE_CREATE_RESET,
+});
+
+export const candidateUpdate =
+  (
+    id: CandidateInterface['_id'],
+    candidateData: Pick<
+      CandidateInterface,
+      'firstName' | 'lastName' | 'shortName'
+    >
+  ): ThunkAction<
+    Promise<void>,
+    RootState,
+    undefined,
+    CandidateUpdateAction | CandidateListActionSuccess | SnackBarActionOpen
+  > =>
+  async (dispatch, getState) => {
+    const token = localStorage.getItem('token');
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      dispatch<CandidateUpdateActionRequest>({
+        type: ActionTypes.CANDIDATE_UPDATE_REQUEST,
+      });
+
+      const { data } = await axios.put<
+        typeof candidateData,
+        AxiosResponse<CandidateInterface>
+      >(`/api/candidates/${id}`, candidateData, config);
+
+      dispatch<CandidateUpdateActionSuccess>({
+        type: ActionTypes.CANDIDATE_UPDATE_SUCCESS,
+        payload: data,
+      });
+
+      dispatch<SnackBarActionOpen>({
+        type: ActionTypes.SNACKBAR_OPEN,
+        message: 'Candidate successfully created',
+        severity: 'success',
+      });
+
+      dispatch<CandidateListActionSuccess>({
+        type: ActionTypes.CANDIDATE_LIST_SUCCESS,
+        payload: getState().candidateList.candidates.map((candidate) =>
+          candidate._id === id ? data : candidate
+        ),
+      });
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+
+      dispatch<CandidateUpdateActionFail>({
+        type: ActionTypes.CANDIDATE_UPDATE_FAIL,
+        payload: error.response?.data.message || error.message,
+      });
+
+      dispatch<SnackBarActionOpen>({
+        type: ActionTypes.SNACKBAR_OPEN,
+        message: error.response?.data.message || error.message,
+        severity: 'error',
+      });
+    }
+  };
+
+export const canidateUpdateReset = (): CandidateUpdateActionReset => ({
+  type: ActionTypes.CANDIDATE_UPDATE_RESET,
 });

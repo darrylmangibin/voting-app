@@ -10,3 +10,8 @@ export const candidateCreateSelector = createSelector(
   [(state: RootState) => state],
   (state) => state.candidateCreate
 );
+
+export const candidateUpdateSelector = createSelector(
+  [(state: RootState) => state],
+  (state) => state.candidateUpdate
+);

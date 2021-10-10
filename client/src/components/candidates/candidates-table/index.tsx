@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Paper,
@@ -11,13 +11,13 @@ import {
 } from '@mui/material';
 
 import ModalContainer from 'components/modal/modal-container';
-import CandidateForm from '../candidate-form';
+import CandidateForm, { CandidateFormCandidateData } from '../candidate-form';
 import Skeleton from 'components/skeleton';
 
 import * as routes from 'routes';
 import { CandidateInterface, UserRole } from 'interfaces';
 import { userAuthSelector } from 'selectors';
-import { typedUseSelector } from 'hooks/redux-hooks';
+import { typedUseSelector, typedUseDispatch } from 'hooks/redux-hooks';
 
 interface CandidatesTableProps {
   candidates: CandidateInterface[];
@@ -27,9 +27,24 @@ interface CandidatesTableProps {
 const CandidatesTable: FC<CandidatesTableProps> = ({ candidates, loading }) => {
   const [openModal, setOpenModal] = useState(false);
 
+  const { candidateUpdate, canidateUpdateReset } = typedUseDispatch();
   const { user } = typedUseSelector(userAuthSelector);
 
   const history = useHistory();
+
+  const candidateRef = useRef<CandidateInterface | null>(null);
+
+  useEffect(() => {
+    if (!openModal) {
+      candidateRef.current = null;
+      canidateUpdateReset();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openModal]);
+
+  const onSubmit = (candidateData: CandidateFormCandidateData) => {
+    candidateUpdate(candidateRef.current?._id, candidateData);
+  };
 
   return (
     <>
@@ -59,6 +74,7 @@ const CandidatesTable: FC<CandidatesTableProps> = ({ candidates, loading }) => {
                   onClick={() => {
                     if (user?.role === UserRole.ADMIN) {
                       setOpenModal(true);
+                      candidateRef.current = candidate;
                     } else {
                       history.push(
                         `${routes.CANDIDATES_ROUTE}/${candidate._id}`
@@ -80,10 +96,12 @@ const CandidatesTable: FC<CandidatesTableProps> = ({ candidates, loading }) => {
       </TableContainer>
       <ModalContainer
         open={openModal}
-        onClose={() => setOpenModal(false)}
+        onClose={() => {
+          setOpenModal(false);
+        }}
         title='Edit a Candidate'
       >
-        <CandidateForm onSubmit={() => null} />
+        <CandidateForm onSubmit={onSubmit} candidate={candidateRef.current} />
       </ModalContainer>
     </>
   );

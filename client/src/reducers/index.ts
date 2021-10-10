@@ -11,6 +11,7 @@ import {
 import {
   candidateListReducer,
   candidateCreateReducer,
+  candidateUpdateReducer,
 } from './candidate-reducer';
 import { snackbarReducer } from './snackbar-reducer';
 
@@ -25,6 +26,7 @@ const reducers = combineReducers({
   // CANDIDATE
   candidateList: candidateListReducer,
   candidateCreate: candidateCreateReducer,
+  candidateUpdate: candidateUpdateReducer,
   // SNACKBAR
   snackbar: snackbarReducer,
 });

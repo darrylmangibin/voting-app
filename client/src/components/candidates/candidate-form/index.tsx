@@ -1,5 +1,6 @@
-import { ChangeEvent, FC, FormEvent, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react';
 import { Box, TextField, Button } from '@mui/material';
+import { CandidateInterface } from 'interfaces';
 
 export interface CandidateFormCandidateData {
   firstName: string;
@@ -10,9 +11,14 @@ export interface CandidateFormCandidateData {
 interface CandidateFormProps {
   onSubmit: (candidateData: CandidateFormCandidateData) => void;
   loading?: boolean;
+  candidate?: CandidateInterface | null;
 }
 
-const CandidateForm: FC<CandidateFormProps> = ({ onSubmit, loading }) => {
+const CandidateForm: FC<CandidateFormProps> = ({
+  onSubmit,
+  loading,
+  candidate,
+}) => {
   const [candidateData, setCandidateData] =
     useState<CandidateFormCandidateData>({
       firstName: '',
@@ -33,6 +39,26 @@ const CandidateForm: FC<CandidateFormProps> = ({ onSubmit, loading }) => {
 
     onSubmit(candidateData);
   };
+
+  useEffect(() => {
+    if (candidate) {
+      setCandidateData((prevState) => ({
+        ...prevState,
+        firstName: candidate.firstName,
+        lastName: candidate.lastName,
+        shortName: candidate.shortName,
+      }));
+    }
+
+    return () => {
+      setCandidateData((prevState) => ({
+        ...prevState,
+        firstName: '',
+        lastName: '',
+        shortName: '',
+      }));
+    };
+  }, [candidate]);
 
   return (
     <Box

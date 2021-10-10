@@ -6,7 +6,7 @@ const getCandidates = asyncHandler(async (req, res, next) => {
     path: 'votes',
     populate: {
       path: 'voter',
-      select: '-password'
+      select: '-password',
     },
   });
 
@@ -20,7 +20,7 @@ const getCandidateById = asyncHandler(async (req, res, next) => {
     path: 'votes',
     populate: {
       path: 'voter',
-      select: '-password'
+      select: '-password',
     },
   });
 
@@ -63,7 +63,13 @@ const updateCandidateById = asyncHandler(async (req, res, next) => {
     req.params.id,
     { firstName, lastName, shortName },
     { new: true, runValidators: true }
-  );
+  ).populate({
+    path: 'votes',
+    populate: {
+      path: 'voter',
+      select: '-password',
+    },
+  });
 
   res.status(200).json(updatedCandidate);
 });
