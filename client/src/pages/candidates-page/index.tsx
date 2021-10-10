@@ -7,7 +7,7 @@ import CandidateForm from 'components/candidates/candidate-form';
 import { Typography } from '@mui/material';
 
 const CandidatesPage: FC = () => {
-  const [openMoldal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   return (
     <>
@@ -19,7 +19,7 @@ const CandidatesPage: FC = () => {
       </TableAction>
       <CandidatesTable />
       <ModalContainer
-        open={openMoldal}
+        open={openModal}
         onClose={() => setOpenModal(false)}
         title='Add a Candidate'
       >
