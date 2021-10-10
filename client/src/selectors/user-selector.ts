@@ -10,3 +10,8 @@ export const authUserSelector = createSelector(
   [(state: RootState) => state],
   (state) => state.authUser
 );
+
+export const loginUserSelector = createSelector(
+  [(state: RootState) => state],
+  (state) => state.loginUser
+);

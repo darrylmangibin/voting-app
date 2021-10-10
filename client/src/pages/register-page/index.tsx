@@ -28,7 +28,7 @@ const RegisterPage: FC<RegisterPageProps> = ({ history }) => {
   });
   const { firstName, lastName, email, password } = userData;
 
-  const { registerUser } = typedUseDispatch();
+  const { registerUser, registerUserReset } = typedUseDispatch();
 
   const { loading } = typedUseSelector(registerUserSelector);
   const { auth } = typedUseSelector(authUserSelector);
@@ -50,6 +50,11 @@ const RegisterPage: FC<RegisterPageProps> = ({ history }) => {
     if (auth) {
       history.push(routes.CANDIDATES_ROUTE);
     }
+
+    return () => {
+      registerUserReset();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth, history]);
 
   return (

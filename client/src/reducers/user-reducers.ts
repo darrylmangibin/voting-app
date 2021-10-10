@@ -1,6 +1,11 @@
 import { Reducer } from 'redux';
 
-import { AuthUserAction, LogoutUserAction, RegisterUserAction } from 'actions';
+import {
+  AuthUserAction,
+  LoginUserAction,
+  LogoutUserAction,
+  RegisterUserAction,
+} from 'actions';
 import * as ActionTypes from 'action-types';
 import { UserInterface } from 'interfaces';
 
@@ -72,5 +77,39 @@ export const registerUserReducer: Reducer<
     default: {
       return state;
     }
+  }
+};
+
+interface LoginUserState extends UserInitialState {
+  token: string | null;
+}
+
+export const loginUserReducer: Reducer<LoginUserState, LoginUserAction> = (
+  state = { token: null },
+  action
+) => {
+  switch (action.type) {
+    case ActionTypes.LOGIN_USER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ActionTypes.LOGIN_USER_SUCCESS:
+      localStorage.setItem('token', action.payload)
+      return {
+        ...state,
+        loading: false,
+        token: action.payload,
+      };
+    case ActionTypes.LOGIN_USER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case ActionTypes.LOGIN_USER_RESET:
+      return { token: null };
+    default:
+      return state;
   }
 };

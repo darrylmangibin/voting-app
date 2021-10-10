@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { ChangeEvent, FC, FormEvent, useState, useEffect } from 'react';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import {
   Avatar,
   Button,
@@ -14,8 +14,42 @@ import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
 import Copyright from 'components/copyright';
 
 import * as routes from 'routes';
+import { typedUseDispatch, typedUseSelector } from 'hooks/redux-hooks';
+import { authUserSelector, loginUserSelector } from 'selectors';
 
-const LoginPage: FC = () => {
+interface LoginPageProps extends RouteComponentProps {}
+
+const LoginPage: FC<LoginPageProps> = ({ history }) => {
+  const [userData, setUserData] = useState({
+    email: '',
+    password: '',
+  });
+  const { email, password } = userData;
+
+  const { loginUser } = typedUseDispatch();
+  const { loading } = typedUseSelector(loginUserSelector);
+  const { auth } = typedUseSelector(authUserSelector);
+
+  const onChangeUserData = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    loginUser(userData);
+  };
+
+  useEffect(() => {
+    if (auth) {
+      history.push(routes.CANDIDATES_ROUTE);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth]);
+
   return (
     <Container component='main' maxWidth='xs'>
       <Box
@@ -32,14 +66,15 @@ const LoginPage: FC = () => {
         <Typography component='h1' variant='h5'>
           Login
         </Typography>
-        <Box component='form' noValidate sx={{ mt: 1 }}>
+        <Box component='form' noValidate sx={{ mt: 1 }} onSubmit={onSubmit}>
           <TextField
             margin='normal'
             required
             fullWidth
-            id='email'
             label='Email Address'
             name='email'
+            value={email}
+            onChange={onChangeUserData}
             autoComplete='off'
           />
           <TextField
@@ -49,13 +84,15 @@ const LoginPage: FC = () => {
             name='password'
             label='Password'
             type='password'
-            id='password'
+            value={password}
+            onChange={onChangeUserData}
           />
           <Button
             type='submit'
             fullWidth
             variant='contained'
             sx={{ mt: 3, mb: 2 }}
+            disabled={loading}
           >
             Login
           </Button>

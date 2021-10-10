@@ -43,5 +43,27 @@ export type AuthUserAction =
   | AuthUserActionSuccess
   | AuthUserActionFail;
 
-  export interface LogoutUserAction
+export interface LogoutUserAction
   extends Action<typeof ActionTypes.LOGOUT_USER> {}
+
+export interface LoginUserActionRequest
+  extends Action<typeof ActionTypes.LOGIN_USER_REQUEST> {}
+
+export interface LoginUserActionSuccess
+  extends Action<typeof ActionTypes.LOGIN_USER_SUCCESS> {
+  payload: string;
+}
+
+export interface LoginUserActionFail
+  extends Action<typeof ActionTypes.LOGIN_USER_FAIL> {
+  payload?: string;
+}
+
+export interface LoginUserActionReset
+  extends Action<typeof ActionTypes.LOGIN_USER_RESET> {}
+
+export type LoginUserAction =
+  | LoginUserActionRequest
+  | LoginUserActionSuccess
+  | LoginUserActionFail
+  | LoginUserActionReset;
