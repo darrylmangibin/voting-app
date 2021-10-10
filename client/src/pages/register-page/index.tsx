@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { ChangeEvent, FC, FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Avatar,
@@ -12,10 +12,35 @@ import {
 import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
 
 import Copyright from 'components/copyright';
+import SnackbarNotification from 'components/snackbar-notification';
 
 import * as routes from 'routes';
+import { typedUseDispatch } from 'hooks/redux-hooks';
 
 const RegisterPage: FC = () => {
+  const [userData, setUserData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+  });
+  const { firstName, lastName, email, password } = userData;
+
+  const { registerUser } = typedUseDispatch();
+
+  const onChangeUserData = (e: ChangeEvent<HTMLInputElement>): void => {
+    setUserData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    registerUser(userData);
+  };
+
   return (
     <Container component='main' maxWidth='sm'>
       <Box
@@ -32,7 +57,7 @@ const RegisterPage: FC = () => {
         <Typography component='h1' variant='h5'>
           Register
         </Typography>
-        <Box component='form' noValidate sx={{ mt: 3 }}>
+        <Box component='form' noValidate sx={{ mt: 3 }} onSubmit={onSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -40,28 +65,31 @@ const RegisterPage: FC = () => {
                 name='firstName'
                 required
                 fullWidth
-                id='firstName'
                 label='First Name'
+                value={firstName}
+                onChange={onChangeUserData}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 required
                 fullWidth
-                id='lastName'
                 label='Last Name'
                 name='lastName'
                 autoComplete='off'
+                value={lastName}
+                onChange={onChangeUserData}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 required
                 fullWidth
-                id='email'
                 label='Email Address'
                 name='email'
                 autoComplete='off'
+                value={email}
+                onChange={onChangeUserData}
               />
             </Grid>
             <Grid item xs={12}>
@@ -71,8 +99,9 @@ const RegisterPage: FC = () => {
                 name='password'
                 label='Password'
                 type='password'
-                id='password'
                 autoComplete='off'
+                value={password}
+                onChange={onChangeUserData}
               />
             </Grid>
           </Grid>

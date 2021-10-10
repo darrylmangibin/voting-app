@@ -1,7 +1,11 @@
 import { combineReducers } from 'redux';
 
+import { registerUserReducer } from './user-reducers';
+import { snackbarReducer } from './snackbar-reducer';
+
 const reducers = combineReducers({
-  test: () => 'test',
+  registerUser: registerUserReducer,
+  snackbar: snackbarReducer,
 });
 
 export type RootState = ReturnType<typeof reducers>;
