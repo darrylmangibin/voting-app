@@ -4,16 +4,34 @@ import { Typography } from '@mui/material';
 import CandidatesTable from 'components/candidates/candidates-table';
 import DashbaordHeader from 'components/dashboard-header';
 import ModalContainer from 'components/modal/modal-container';
-import CandidateForm from 'components/candidates/candidate-form';
+import CandidateForm, {
+  CandidateFormCandidateData,
+} from 'components/candidates/candidate-form';
 
 import { typedUseDispatch, typedUseSelector } from 'hooks/redux-hooks';
-import { candidateListSelector } from 'selectors';
+import { candidateListSelector, candidateCreateSelector } from 'selectors';
 
 const CandidatesPage: FC = () => {
   const [openModal, setOpenModal] = useState(false);
 
-  const { candidteList } = typedUseDispatch();
-  const { candidates,loading } = typedUseSelector(candidateListSelector);
+  const { candidteList, candidateCreate, canidateCreateReset } =
+    typedUseDispatch();
+  const { candidates, loading } = typedUseSelector(candidateListSelector);
+  const { loading: candidateCreateLoading, success } = typedUseSelector(
+    candidateCreateSelector
+  );
+
+  const onSubmit = (candidateData: CandidateFormCandidateData) => {
+    candidateCreate(candidateData);
+  };
+
+  useEffect(() => {
+    if (success) {
+      setOpenModal(false);
+      canidateCreateReset();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [success]);
 
   useEffect(() => {
     candidteList();
@@ -34,7 +52,7 @@ const CandidatesPage: FC = () => {
         onClose={() => setOpenModal(false)}
         title='Add a Candidate'
       >
-        <CandidateForm />
+        <CandidateForm onSubmit={onSubmit} loading={candidateCreateLoading} />
       </ModalContainer>
     </>
   );

@@ -71,7 +71,7 @@ const CandidatesTable: FC<CandidatesTableProps> = ({ candidates, loading }) => {
                   </TableCell>
                   <TableCell>{candidate.firstName}</TableCell>
                   <TableCell>{candidate.lastName}</TableCell>
-                  <TableCell>{candidate.votes.length}</TableCell>
+                  <TableCell>{candidate.votes?.length ?? 0}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -83,7 +83,7 @@ const CandidatesTable: FC<CandidatesTableProps> = ({ candidates, loading }) => {
         onClose={() => setOpenModal(false)}
         title='Edit a Candidate'
       >
-        <CandidateForm />
+        <CandidateForm onSubmit={() => null} />
       </ModalContainer>
     </>
   );

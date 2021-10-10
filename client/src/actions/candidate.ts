@@ -24,3 +24,25 @@ export type CandidateListAction =
   | CandidateListActionSuccess
   | CandidateListActionFail
   | CandidateListActionReset;
+
+export interface CandidateCreateActionRequest
+  extends Action<typeof ActionTypes.CANDIDATE_CREATE_REQUEST> {}
+
+export interface CandidateCreateActionSuccess
+  extends Action<typeof ActionTypes.CANDIDATE_CREATE_SUCCESS> {
+  payload: CandidateInterface;
+}
+
+export interface CandidateCreateActionFail
+  extends Action<typeof ActionTypes.CANDIDATE_CREATE_FAIL> {
+  payload?: string;
+}
+
+export interface CandidateCreateActionReset
+  extends Action<typeof ActionTypes.CANDIDATE_CREATE_RESET> {}
+
+export type CandidateCreateAction =
+  | CandidateCreateActionRequest
+  | CandidateCreateActionSuccess
+  | CandidateCreateActionFail
+  | CandidateCreateActionReset;

@@ -8,7 +8,10 @@ import {
   userProfileUpdateReducer,
   userListReducer,
 } from './user-reducers';
-import { candidateListReducer } from './candidate-reducer'
+import {
+  candidateListReducer,
+  candidateCreateReducer,
+} from './candidate-reducer';
 import { snackbarReducer } from './snackbar-reducer';
 
 const reducers = combineReducers({
@@ -21,6 +24,7 @@ const reducers = combineReducers({
   userList: userListReducer,
   // CANDIDATE
   candidateList: candidateListReducer,
+  candidateCreate: candidateCreateReducer,
   // SNACKBAR
   snackbar: snackbarReducer,
 });
