@@ -5,3 +5,8 @@ export const registerUserSelector = createSelector(
   [(state: RootState) => state],
   (state) => state.registerUser
 );
+
+export const authUserSelector = createSelector(
+  [(state: RootState) => state],
+  (state) => state.authUser
+);

@@ -24,6 +24,7 @@ export const snackbarReducer: Reducer<SnackbarState, SnackbarAction> = (
       };
     case ActionTypes.SNACKBAR_CLOSE:
       return {
+        ...state,
         open: false,
       };
     default:

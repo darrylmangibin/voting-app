@@ -1,13 +1,44 @@
 import { Reducer } from 'redux';
 
-import { RegisterUserAction } from 'actions';
+import { AuthUserAction, RegisterUserAction } from 'actions';
 import * as ActionTypes from 'action-types';
+import { UserInterface } from 'interfaces';
 
 interface UserInitialState {
   loading?: boolean;
   success?: boolean;
   error?: string;
 }
+
+interface AuthUserState extends UserInitialState {
+  user?: UserInterface;
+  auth?: boolean;
+}
+
+export const authUserReducer: Reducer<AuthUserState, AuthUserAction> = (
+  state = {},
+  action
+) => {
+  switch (action.type) {
+    case ActionTypes.AUTH_USER_REQUEST:
+      return {
+        loading: true,
+      };
+    case ActionTypes.AUTH_USER_SUCCESS:
+      return {
+        loading: true,
+        user: action.payload,
+        auth: true,
+      };
+    case ActionTypes.AUTH_USER_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
 
 interface RegisterUserState extends UserInitialState {
   token: string | null;

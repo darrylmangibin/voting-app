@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -11,12 +11,22 @@ import CandidateDetailsPage from 'pages/candidate-details-page';
 import Layout from 'components/layout';
 import * as routes from 'routes';
 import SnackbarNotification from 'components/snackbar-notification';
+
 import { RootState } from 'reducers';
+import { typedUseDispatch } from 'hooks/redux-hooks';
 
 const App: FC = () => {
   const { open, message, severity } = useSelector(
     (state: RootState) => state.snackbar
   );
+
+  const { authUser } = typedUseDispatch();
+
+  useEffect(() => {
+    authUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Router>
       <Switch>

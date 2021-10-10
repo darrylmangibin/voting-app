@@ -24,6 +24,7 @@ const SnackbarNotification: FC<SnackbarNotificationProps> = ({
       onClose={() => dispatch(closeSnackbar())}
     >
       <Alert
+        variant="filled"
         severity={severity}
         sx={{ width: '100%' }}
         onClose={() => dispatch(closeSnackbar())}

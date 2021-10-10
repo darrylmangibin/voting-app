@@ -1,5 +1,5 @@
-import { ChangeEvent, FC, FormEvent, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import {
   Avatar,
   Button,
@@ -12,12 +12,14 @@ import {
 import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
 
 import Copyright from 'components/copyright';
-import SnackbarNotification from 'components/snackbar-notification';
 
 import * as routes from 'routes';
-import { typedUseDispatch } from 'hooks/redux-hooks';
+import { typedUseDispatch, typedUseSelector } from 'hooks/redux-hooks';
+import { registerUserSelector, authUserSelector } from 'selectors';
 
-const RegisterPage: FC = () => {
+interface RegisterPageProps extends RouteComponentProps {}
+
+const RegisterPage: FC<RegisterPageProps> = ({ history }) => {
   const [userData, setUserData] = useState({
     firstName: '',
     lastName: '',
@@ -27,6 +29,9 @@ const RegisterPage: FC = () => {
   const { firstName, lastName, email, password } = userData;
 
   const { registerUser } = typedUseDispatch();
+
+  const { loading } = typedUseSelector(registerUserSelector);
+  const { auth } = typedUseSelector(authUserSelector);
 
   const onChangeUserData = (e: ChangeEvent<HTMLInputElement>): void => {
     setUserData((prevState) => ({
@@ -40,6 +45,12 @@ const RegisterPage: FC = () => {
 
     registerUser(userData);
   };
+
+  useEffect(() => {
+    if (auth) {
+      history.push(routes.CANDIDATES_ROUTE);
+    }
+  }, [auth, history]);
 
   return (
     <Container component='main' maxWidth='sm'>
@@ -110,6 +121,7 @@ const RegisterPage: FC = () => {
             fullWidth
             variant='contained'
             sx={{ mt: 3, mb: 2 }}
+            disabled={loading}
           >
             Register
           </Button>
