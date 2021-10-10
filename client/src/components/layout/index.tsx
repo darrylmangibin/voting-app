@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,7 +13,9 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import { Menu, MenuItem } from '@mui/material';
 import {
+  AccountCircle,
   People as PeopleIcon,
   PeopleOutline as PeopleOutlineIcon,
 } from '@mui/icons-material';
@@ -24,6 +26,20 @@ import * as routes from 'routes';
 const MiniDrawer: FC = ({ children }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const history = useHistory();
+
+  const handleMenu = (event: React.BaseSyntheticEvent): void => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (url: string = ''): void | string => {
+    setAnchorEl(null);
+    return url && history.push(url);
+  };
+
+  const openAnchorEl = Boolean(anchorEl);
 
   return (
     <Box sx={{ display: 'flex', background: '#f5f5f5', minHeight: '100vh' }}>
@@ -44,6 +60,39 @@ const MiniDrawer: FC = ({ children }) => {
           <Typography variant='h6' noWrap component='div'>
             Voting App
           </Typography>
+          <Box sx={{ marginLeft: 'auto' }}>
+            <IconButton
+              aria-label='account of current user'
+              aria-controls='menu-appbar'
+              aria-haspopup='true'
+              onClick={handleMenu}
+              color='inherit'
+              style={{ fontSize: 'inherit' }}
+            >
+              <AccountCircle />
+              User
+            </IconButton>
+            <Menu
+              id='menu-appbar'
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={openAnchorEl}
+              onClose={() => handleClose()}
+            >
+              <MenuItem onClick={() => handleClose(routes.PROFILE_ROUTE)}>
+                Profile
+              </MenuItem>
+              <MenuItem>Log out</MenuItem>
+            </Menu>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer variant='permanent' open={open}>
