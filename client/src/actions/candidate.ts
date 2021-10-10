@@ -68,3 +68,26 @@ export type CandidateUpdateAction =
   | CandidateUpdateActionSuccess
   | CandidateUpdateActionFail
   | CandidateUpdateActionReset;
+
+  export interface CandidateDetailsActionRequest
+  extends Action<typeof ActionTypes.CANDIDATE_DETAILS_REQUEST> {}
+
+export interface CandidateDetailsActionSuccess
+  extends Action<typeof ActionTypes.CANDIDATE_DETAILS_SUCCESS> {
+  payload: CandidateInterface;
+}
+
+export interface CandidateDetailsActionFail
+  extends Action<typeof ActionTypes.CANDIDATE_DETAILS_FAIL> {
+  payload?: string;
+}
+
+export interface CandidateDetailsActionReset
+  extends Action<typeof ActionTypes.CANDIDATE_DETAILS_RESET> {}
+
+export type CandidateDetailsAction =
+  | CandidateDetailsActionRequest
+  | CandidateDetailsActionSuccess
+  | CandidateDetailsActionFail
+  | CandidateDetailsActionReset;
+

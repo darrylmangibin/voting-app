@@ -4,6 +4,7 @@ import * as ActionTypes from 'action-types';
 import { CandidateInterface } from 'interfaces';
 import {
   CandidateCreateAction,
+  CandidateDetailsAction,
   CandidateListAction,
   CandidateUpdateAction,
 } from 'actions/candidate';
@@ -109,6 +110,40 @@ export const candidateUpdateReducer: Reducer<
         error: action.payload,
       };
     case ActionTypes.CANDIDATE_UPDATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+interface CandidateDetailsState extends CandidateInitialState {
+  candidate?: CandidateInterface;
+}
+
+export const candidateDetailsReducer: Reducer<
+  CandidateDetailsState,
+  CandidateDetailsAction
+> = (state = {}, action) => {
+  switch (action.type) {
+    case ActionTypes.CANDIDATE_DETAILS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ActionTypes.CANDIDATE_DETAILS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        candidate: action.payload,
+        success: true,
+      };
+    case ActionTypes.CANDIDATE_DETAILS_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case ActionTypes.CANDIDATE_DETAILS_RESET:
       return {};
     default:
       return state;

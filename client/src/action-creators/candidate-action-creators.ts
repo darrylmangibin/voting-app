@@ -8,6 +8,11 @@ import {
   CandidateCreateActionRequest,
   CandidateCreateActionReset,
   CandidateCreateActionSuccess,
+  CandidateDetailsAction,
+  CandidateDetailsActionFail,
+  CandidateDetailsActionRequest,
+  CandidateDetailsActionReset,
+  CandidateDetailsActionSuccess,
   CandidateListAction,
   CandidateListActionFail,
   CandidateListActionRequest,
@@ -178,7 +183,7 @@ export const candidateUpdate =
 
       dispatch<SnackBarActionOpen>({
         type: ActionTypes.SNACKBAR_OPEN,
-        message: 'Candidate successfully created',
+        message: 'Candidate successfully updated',
         severity: 'success',
       });
 
@@ -204,6 +209,58 @@ export const candidateUpdate =
     }
   };
 
-export const canidateUpdateReset = (): CandidateUpdateActionReset => ({
+export const candidateUpdateReset = (): CandidateUpdateActionReset => ({
   type: ActionTypes.CANDIDATE_UPDATE_RESET,
+});
+
+export const candidateDetails =
+  (
+    id: CandidateInterface['_id']
+  ): ThunkAction<
+    Promise<void>,
+    RootState,
+    undefined,
+    CandidateDetailsAction | SnackBarActionOpen
+  > =>
+  async (dispatch) => {
+    const token = localStorage.getItem('token');
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      dispatch<CandidateDetailsActionRequest>({
+        type: ActionTypes.CANDIDATE_DETAILS_REQUEST,
+      });
+
+      const { data } = await axios.get<CandidateInterface>(
+        `/api/candidates/${id}`,
+        config
+      );
+
+      dispatch<CandidateDetailsActionSuccess>({
+        type: ActionTypes.CANDIDATE_DETAILS_SUCCESS,
+        payload: data,
+      });
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+
+      dispatch<CandidateDetailsActionFail>({
+        type: ActionTypes.CANDIDATE_DETAILS_FAIL,
+        payload: error.response?.data.message || error.message,
+      });
+
+      dispatch<SnackBarActionOpen>({
+        type: ActionTypes.SNACKBAR_OPEN,
+        message: error.response?.data.message || error.message,
+        severity: 'error',
+      });
+    }
+  };
+
+export const candidateDetailsReset = (): CandidateDetailsActionReset => ({
+  type: ActionTypes.CANDIDATE_DETAILS_RESET,
 });

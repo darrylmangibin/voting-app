@@ -16,7 +16,7 @@ import Skeleton from 'components/skeleton';
 
 import * as routes from 'routes';
 import { CandidateInterface, UserRole } from 'interfaces';
-import { userAuthSelector } from 'selectors';
+import { candidateUpdateSelector, userAuthSelector } from 'selectors';
 import { typedUseSelector, typedUseDispatch } from 'hooks/redux-hooks';
 
 interface CandidatesTableProps {
@@ -27,8 +27,9 @@ interface CandidatesTableProps {
 const CandidatesTable: FC<CandidatesTableProps> = ({ candidates, loading }) => {
   const [openModal, setOpenModal] = useState(false);
 
-  const { candidateUpdate, canidateUpdateReset } = typedUseDispatch();
+  const { candidateUpdate, candidateUpdateReset } = typedUseDispatch();
   const { user } = typedUseSelector(userAuthSelector);
+  const { loading: candidateUpdateLoading } = typedUseSelector(candidateUpdateSelector)
 
   const history = useHistory();
 
@@ -37,7 +38,7 @@ const CandidatesTable: FC<CandidatesTableProps> = ({ candidates, loading }) => {
   useEffect(() => {
     if (!openModal) {
       candidateRef.current = null;
-      canidateUpdateReset();
+      candidateUpdateReset();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openModal]);
@@ -101,7 +102,7 @@ const CandidatesTable: FC<CandidatesTableProps> = ({ candidates, loading }) => {
         }}
         title='Edit a Candidate'
       >
-        <CandidateForm onSubmit={onSubmit} candidate={candidateRef.current} />
+        <CandidateForm onSubmit={onSubmit} candidate={candidateRef.current} loading={candidateUpdateLoading} />
       </ModalContainer>
     </>
   );
