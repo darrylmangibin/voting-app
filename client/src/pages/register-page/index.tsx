@@ -15,7 +15,7 @@ import Copyright from 'components/copyright';
 
 import * as routes from 'routes';
 import { typedUseDispatch, typedUseSelector } from 'hooks/redux-hooks';
-import { registerUserSelector, authUserSelector } from 'selectors';
+import { userRegisterSelector, userAuthSelector } from 'selectors';
 
 interface RegisterPageProps extends RouteComponentProps {}
 
@@ -28,10 +28,10 @@ const RegisterPage: FC<RegisterPageProps> = ({ history }) => {
   });
   const { firstName, lastName, email, password } = userData;
 
-  const { registerUser, registerUserReset } = typedUseDispatch();
+  const { userRegister, userRegisterReset } = typedUseDispatch();
 
-  const { loading } = typedUseSelector(registerUserSelector);
-  const { auth } = typedUseSelector(authUserSelector);
+  const { loading } = typedUseSelector(userRegisterSelector);
+  const { auth } = typedUseSelector(userAuthSelector);
 
   const onChangeUserData = (e: ChangeEvent<HTMLInputElement>): void => {
     setUserData((prevState) => ({
@@ -43,7 +43,7 @@ const RegisterPage: FC<RegisterPageProps> = ({ history }) => {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    registerUser(userData);
+    userRegister(userData);
   };
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const RegisterPage: FC<RegisterPageProps> = ({ history }) => {
     }
 
     return () => {
-      registerUserReset();
+      userRegisterReset();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth, history]);

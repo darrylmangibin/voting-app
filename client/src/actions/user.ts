@@ -3,67 +3,89 @@ import { Action } from 'redux';
 import * as ActionTypes from 'action-types';
 import { UserInterface } from 'interfaces';
 
-export interface RegisterUserActionRequest
-  extends Action<typeof ActionTypes.REGISTER_USER_REQUEST> {}
+export interface UserRegisterActionRequest
+  extends Action<typeof ActionTypes.USER_REGISTER_REQUEST> {}
 
-export interface RegisterUserActionSuccess
-  extends Action<typeof ActionTypes.REGISTER_USER_SUCCESS> {
+export interface UserRegisterActionSuccess
+  extends Action<typeof ActionTypes.USER_REGISTER_SUCCESS> {
   payload: string;
 }
 
-export interface RegisterUserActionFail
-  extends Action<typeof ActionTypes.REGISTER_USER_FAIL> {
+export interface UserRegisterActionFail
+  extends Action<typeof ActionTypes.USER_REGISTER_FAIL> {
   payload?: string;
 }
 
-export interface RegisterUserActionReset
-  extends Action<typeof ActionTypes.REGISTER_USER_RESET> {}
+export interface UserRegisterActionReset
+  extends Action<typeof ActionTypes.USER_REGISTER_RESET> {}
 
-export type RegisterUserAction =
-  | RegisterUserActionRequest
-  | RegisterUserActionSuccess
-  | RegisterUserActionFail
-  | RegisterUserActionReset;
+export type UserRegisterAction =
+  | UserRegisterActionRequest
+  | UserRegisterActionSuccess
+  | UserRegisterActionFail
+  | UserRegisterActionReset;
 
-export interface AuthUserActionRequest
-  extends Action<typeof ActionTypes.AUTH_USER_REQUEST> {}
+export interface UserAuthActionRequest
+  extends Action<typeof ActionTypes.USER_AUTH_REQUEST> {}
 
-export interface AuthUserActionSuccess
-  extends Action<typeof ActionTypes.AUTH_USER_SUCCESS> {
+export interface UserAuthActionSuccess
+  extends Action<typeof ActionTypes.USER_AUTH_SUCCESS> {
   payload: UserInterface;
 }
 
-export interface AuthUserActionFail
-  extends Action<typeof ActionTypes.AUTH_USER_FAIL> {
+export interface UserAuthActionFail
+  extends Action<typeof ActionTypes.USER_AUTH_FAIL> {
   payload?: string;
 }
 
-export type AuthUserAction =
-  | AuthUserActionRequest
-  | AuthUserActionSuccess
-  | AuthUserActionFail;
+export type UserAuthAction =
+  | UserAuthActionRequest
+  | UserAuthActionSuccess
+  | UserAuthActionFail;
 
-export interface LogoutUserAction
-  extends Action<typeof ActionTypes.LOGOUT_USER> {}
+export interface UserLogoutAction
+  extends Action<typeof ActionTypes.USER_LOGOUT> {}
 
-export interface LoginUserActionRequest
-  extends Action<typeof ActionTypes.LOGIN_USER_REQUEST> {}
+export interface UserLoginActionRequest
+  extends Action<typeof ActionTypes.USER_LOGIN_REQUEST> {}
 
-export interface LoginUserActionSuccess
-  extends Action<typeof ActionTypes.LOGIN_USER_SUCCESS> {
+export interface UserLoginActionSuccess
+  extends Action<typeof ActionTypes.USER_LOGIN_SUCCESS> {
   payload: string;
 }
 
-export interface LoginUserActionFail
-  extends Action<typeof ActionTypes.LOGIN_USER_FAIL> {
+export interface UserLoginActionFail
+  extends Action<typeof ActionTypes.USER_LOGIN_FAIL> {
   payload?: string;
 }
 
-export interface LoginUserActionReset
-  extends Action<typeof ActionTypes.LOGIN_USER_RESET> {}
+export interface UserLoginActionReset
+  extends Action<typeof ActionTypes.USER_LOGIN_RESET> {}
 
-export type LoginUserAction =
-  | LoginUserActionRequest
-  | LoginUserActionSuccess
-  | LoginUserActionFail
-  | LoginUserActionReset;
+export type UserLoginAction =
+  | UserLoginActionRequest
+  | UserLoginActionSuccess
+  | UserLoginActionFail
+  | UserLoginActionReset;
+
+export interface UserProfileActionRequest
+  extends Action<typeof ActionTypes.USER_PROFILE_REQUEST> {}
+
+export interface UserProfileActionSuccess
+  extends Action<typeof ActionTypes.USER_PROFILE_SUCCESS> {
+  payload: UserInterface;
+}
+
+export interface UserProfileActionFail
+  extends Action<typeof ActionTypes.USER_PROFILE_FAIL> {
+  payload?: string;
+}
+
+export interface UserProfileActionReset
+  extends Action<typeof ActionTypes.USER_PROFILE_RESET> {}
+
+export type UserProfileAction =
+  | UserProfileActionRequest
+  | UserProfileActionSuccess
+  | UserProfileActionFail
+  | UserProfileActionReset;

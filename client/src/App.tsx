@@ -21,10 +21,10 @@ const App: FC = () => {
     (state: RootState) => state.snackbar
   );
 
-  const { authUser } = typedUseDispatch();
+  const { userAuth } = typedUseDispatch();
 
   useEffect(() => {
-    authUser();
+    userAuth();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

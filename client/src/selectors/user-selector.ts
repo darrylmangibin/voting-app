@@ -1,17 +1,22 @@
 import { RootState } from 'reducers';
 import { createSelector } from 'reselect';
 
-export const registerUserSelector = createSelector(
+export const userRegisterSelector = createSelector(
   [(state: RootState) => state],
-  (state) => state.registerUser
+  (state) => state.userRegister
 );
 
-export const authUserSelector = createSelector(
+export const userAuthSelector = createSelector(
   [(state: RootState) => state],
-  (state) => state.authUser
+  (state) => state.userAuth
 );
 
-export const loginUserSelector = createSelector(
+export const userLoginSelector = createSelector(
   [(state: RootState) => state],
-  (state) => state.loginUser
+  (state) => state.userLogin
+);
+
+export const userProfileSelector = createSelector(
+  [(state: RootState) => state],
+  (state) => state.userProfile
 );

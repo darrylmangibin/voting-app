@@ -5,32 +5,32 @@ import { Dispatch } from 'redux';
 import * as ActionTypes from 'action-types';
 import { RootState } from 'reducers';
 import {
-  RegisterUserAction,
-  RegisterUserActionFail,
-  RegisterUserActionRequest,
-  RegisterUserActionSuccess,
-  RegisterUserActionReset,
+  UserRegisterAction,
+  UserRegisterActionFail,
+  UserRegisterActionRequest,
+  UserRegisterActionSuccess,
+  UserRegisterActionReset,
   SnackbarAction,
   SnackBarActionOpen,
-  AuthUserAction,
-  AuthUserActionRequest,
-  AuthUserActionSuccess,
-  AuthUserActionFail,
-  LoginUserAction,
-  LoginUserActionRequest,
-  LoginUserActionSuccess,
-  LoginUserActionFail,
+  UserAuthAction,
+  UserAuthActionRequest,
+  UserAuthActionSuccess,
+  UserAuthActionFail,
+  UserLoginAction,
+  UserLoginActionRequest,
+  UserLoginActionSuccess,
+  UserLoginActionFail,
+  UserProfileAction,
+  UserProfileActionRequest,
+  UserProfileActionSuccess,
+  UserProfileActionFail,
+  UserProfileActionReset,
 } from 'actions';
 import { UserInterface } from 'interfaces';
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
-export const authUser =
-  (): ThunkAction<
-    Promise<void>,
-    RootState,
-    undefined,
-    AuthUserAction
-  > =>
+export const userAuth =
+  (): ThunkAction<Promise<void>, RootState, undefined, UserAuthAction> =>
   async (dispatch) => {
     const token: string | null = localStorage.getItem('token');
 
@@ -45,36 +45,36 @@ export const authUser =
     }
 
     try {
-      dispatch<AuthUserActionRequest>({
-        type: ActionTypes.AUTH_USER_REQUEST,
+      dispatch<UserAuthActionRequest>({
+        type: ActionTypes.USER_AUTH_REQUEST,
       });
 
       const { data } = await axios.get<UserInterface>('/api/profile', config);
 
-      dispatch<AuthUserActionSuccess>({
-        type: ActionTypes.AUTH_USER_SUCCESS,
+      dispatch<UserAuthActionSuccess>({
+        type: ActionTypes.USER_AUTH_SUCCESS,
         payload: data,
       });
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
 
-      dispatch<AuthUserActionFail>({
-        type: ActionTypes.AUTH_USER_FAIL,
+      dispatch<UserAuthActionFail>({
+        type: ActionTypes.USER_AUTH_FAIL,
         payload: error.response?.data.message || error.message,
       });
     }
   };
 
-type RegisterUserData = Pick<UserInterface, 'firstName' | 'lastName' | 'email'>;
+type UserRegisterData = Pick<UserInterface, 'firstName' | 'lastName' | 'email'>;
 
-export const registerUser =
+export const userRegister =
   (
-    userData: RegisterUserData
+    userData: UserRegisterData
   ): ThunkAction<
     Promise<void>,
     RootState,
     undefined,
-    RegisterUserAction | SnackbarAction
+    UserRegisterAction | SnackbarAction
   > =>
   async (dispatch) => {
     const config: AxiosRequestConfig = {
@@ -84,21 +84,21 @@ export const registerUser =
     };
 
     try {
-      dispatch<RegisterUserActionRequest>({
-        type: ActionTypes.REGISTER_USER_REQUEST,
+      dispatch<UserRegisterActionRequest>({
+        type: ActionTypes.USER_REGISTER_REQUEST,
       });
 
       const { data } = await axios.post<
-        RegisterUserData,
+        UserRegisterData,
         AxiosResponse<{ token: string }>
       >('/api/users', userData, config);
 
-      dispatch<RegisterUserActionSuccess>({
-        type: ActionTypes.REGISTER_USER_SUCCESS,
+      dispatch<UserRegisterActionSuccess>({
+        type: ActionTypes.USER_REGISTER_SUCCESS,
         payload: data.token,
       });
 
-      dispatch(authUser());
+      dispatch(userAuth());
 
       dispatch<SnackBarActionOpen>({
         type: ActionTypes.SNACKBAR_OPEN,
@@ -108,8 +108,8 @@ export const registerUser =
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
 
-      dispatch<RegisterUserActionFail>({
-        type: ActionTypes.REGISTER_USER_FAIL,
+      dispatch<UserRegisterActionFail>({
+        type: ActionTypes.USER_REGISTER_FAIL,
         payload: error.response?.data.message || error.message,
       });
 
@@ -121,29 +121,29 @@ export const registerUser =
     }
   };
 
-export const registerUserReset = (): RegisterUserActionReset => ({
-  type: ActionTypes.REGISTER_USER_RESET,
+export const userRegisterReset = (): UserRegisterActionReset => ({
+  type: ActionTypes.USER_REGISTER_RESET,
 });
 
-export const loginUser =
+export const userLogin =
   (
     userData: Pick<UserInterface, 'email'> & { password: string }
   ): ThunkAction<
     Promise<void>,
     RootState,
     undefined,
-    LoginUserAction | SnackBarActionOpen
+    UserLoginAction | SnackBarActionOpen
   > =>
   async (dispatch) => {
     const config: AxiosRequestConfig = {
       headers: {
-        'Content-Type': 'application/json'
-      }
-    }
+        'Content-Type': 'application/json',
+      },
+    };
 
     try {
-      dispatch<LoginUserActionRequest>({
-        type: ActionTypes.LOGIN_USER_REQUEST,
+      dispatch<UserLoginActionRequest>({
+        type: ActionTypes.USER_LOGIN_REQUEST,
       });
 
       const { data } = await axios.post<
@@ -151,17 +151,17 @@ export const loginUser =
         AxiosResponse<{ token: string }>
       >('/api/users/login', userData, config);
 
-      dispatch<LoginUserActionSuccess>({
-        type: ActionTypes.LOGIN_USER_SUCCESS,
+      dispatch<UserLoginActionSuccess>({
+        type: ActionTypes.USER_LOGIN_SUCCESS,
         payload: data.token,
       });
 
-      dispatch(authUser());
+      dispatch(userAuth());
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
 
-      dispatch<LoginUserActionFail>({
-        type: ActionTypes.LOGIN_USER_FAIL,
+      dispatch<UserLoginActionFail>({
+        type: ActionTypes.USER_LOGIN_FAIL,
         payload: error.response?.data.message || error.message,
       });
 
@@ -173,9 +173,56 @@ export const loginUser =
     }
   };
 
+export const userProfile =
+  (): ThunkAction<
+    Promise<void>,
+    RootState,
+    undefined,
+    UserProfileAction | SnackBarActionOpen
+  > =>
+  async (dispatch) => {
+    const token = localStorage.getItem('token');
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      dispatch<UserProfileActionRequest>({
+        type: ActionTypes.USER_PROFILE_REQUEST,
+      });
+
+      const { data } = await axios.get<UserInterface>('/api/profile', config);
+
+      dispatch<UserProfileActionSuccess>({
+        type: ActionTypes.USER_PROFILE_SUCCESS,
+        payload: data,
+      });
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+
+      dispatch<UserProfileActionFail>({
+        type: ActionTypes.USER_PROFILE_FAIL,
+        payload: error.response?.data.message || error.message,
+      });
+
+      dispatch<SnackBarActionOpen>({
+        type: ActionTypes.SNACKBAR_OPEN,
+        message: error.response?.data.message || error.message,
+        severity: 'error',
+      });
+    }
+  };
+
+export const userProfileReset = (): UserProfileActionReset => ({
+  type: ActionTypes.USER_PROFILE_RESET,
+});
+
 export const logoutUser = () => (dispatch: Dispatch) => {
   localStorage.removeItem('token');
 
-  dispatch({ type: ActionTypes.LOGOUT_USER });
-  dispatch({ type: ActionTypes.REGISTER_USER_RESET });
+  dispatch({ type: ActionTypes.USER_LOGOUT });
+  dispatch({ type: ActionTypes.USER_REGISTER_RESET });
 };

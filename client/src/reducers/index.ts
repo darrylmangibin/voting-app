@@ -1,12 +1,18 @@
 import { combineReducers } from 'redux';
 
-import { registerUserReducer, authUserReducer, loginUserReducer } from './user-reducers';
+import {
+  userRegisterReducer,
+  userAuthReducer,
+  userLoginReducer,
+  userProfileReducer,
+} from './user-reducers';
 import { snackbarReducer } from './snackbar-reducer';
 
 const reducers = combineReducers({
-  registerUser: registerUserReducer,
-  authUser: authUserReducer,
-  loginUser: loginUserReducer,
+  userRegister: userRegisterReducer,
+  userAuth: userAuthReducer,
+  userLogin: userLoginReducer,
+  userProfile: userProfileReducer,
   snackbar: snackbarReducer,
 });
 
