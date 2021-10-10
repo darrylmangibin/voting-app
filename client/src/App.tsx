@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import LoginPage from 'pages/login-page';
 import RegisterPage from 'pages/register-page';
 import CandidatesPage from 'pages/candidates-page';
-import VotersPage from 'pages/votes-page';
+import VotersPage from 'pages/voters-page';
 import Layout from 'components/layout';
 import * as routes from 'routes';
 
