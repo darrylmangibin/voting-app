@@ -5,7 +5,7 @@ const StyledPaper = styled(Paper)({
   marginBottom: '2rem',
   padding: '1rem',
   display: 'flex',
-  justifyContent: 'end',
+  justifyContent: 'start',
 });
 
 export default StyledPaper;

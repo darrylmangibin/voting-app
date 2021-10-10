@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   Paper,
   Table,
@@ -10,6 +11,8 @@ import {
 } from '@mui/material';
 import ModalContainer from 'components/modal/modal-container';
 import CandidateForm from '../candidate-form';
+
+import * as routes from 'routes';
 
 const candidates = [
   {
@@ -47,6 +50,8 @@ const candidates = [
 const CandidatesTable: FC = () => {
   const [openModal, setOpenModal] = useState(false);
 
+  const history = useHistory();
+
   return (
     <>
       <TableContainer
@@ -58,8 +63,9 @@ const CandidatesTable: FC = () => {
           <TableHead>
             <TableRow>
               <TableCell>Short Name</TableCell>
-              <TableCell align='right'>First Name</TableCell>
-              <TableCell align='right'>Last Name</TableCell>
+              <TableCell>First Name</TableCell>
+              <TableCell>Last Name</TableCell>
+              <TableCell>Number of votes</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -68,13 +74,15 @@ const CandidatesTable: FC = () => {
                 key={candidate.id}
                 hover
                 sx={{ cursor: 'pointer' }}
-                onClick={() => setOpenModal(true)}
+                // onClick={() => setOpenModal(true)}
+                onClick={() => history.push(`${routes.CANDIDATES_ROUTE}/2`)}
               >
                 <TableCell component='th' scope='row'>
                   {candidate.shortName}
                 </TableCell>
-                <TableCell align='right'>{candidate.firstName}</TableCell>
-                <TableCell align='right'>{candidate.lastName}</TableCell>
+                <TableCell>{candidate.firstName}</TableCell>
+                <TableCell>{candidate.lastName}</TableCell>
+                <TableCell>153</TableCell>
               </TableRow>
             ))}
           </TableBody>

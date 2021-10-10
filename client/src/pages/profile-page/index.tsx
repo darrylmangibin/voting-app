@@ -1,15 +1,15 @@
 import { FC } from 'react';
 import { Button, Grid, Paper, TextField, Typography } from '@mui/material';
 
-import TableAction from 'components/table-action';
+import DashboardHeader from 'components/dashboard-header';
 import { Box } from '@mui/system';
 
 const ProfilePage: FC = () => {
   return (
     <>
-      <TableAction sx={{ justifyContent: 'start' }}>
+      <DashboardHeader sx={{ justifyContent: 'start' }}>
         <Typography variant='h5'>Profile</Typography>
-      </TableAction>
+      </DashboardHeader>
       <Paper variant='elevation' elevation={3} sx={{ padding: '2rem' }}>
         <Grid container spacing={2}>
           <Grid item xs={8}>

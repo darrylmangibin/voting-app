@@ -3,11 +3,11 @@ import { FC } from 'react';
 
 import StyledPaper from './styled-components/styled-paper';
 
-interface TableActionProps extends PaperProps {
+interface DashboardHeaderProps extends PaperProps {
   onClick?: () => void;
 }
 
-const TableAction: FC<TableActionProps> = ({ onClick, children, ...props }) => {
+const DashboardHeader: FC<DashboardHeaderProps> = ({ onClick, children, ...props }) => {
   return (
     <StyledPaper elevation={3} {...props}>
       {children}
@@ -20,4 +20,4 @@ const TableAction: FC<TableActionProps> = ({ onClick, children, ...props }) => {
   );
 };
 
-export default TableAction;
+export default DashboardHeader;
