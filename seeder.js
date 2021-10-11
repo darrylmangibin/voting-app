@@ -1,12 +1,12 @@
-import dotenv from 'dotenv';
-import colors from 'colors';
+const dotenv = require('dotenv');
+const colors = require('colors');
 
-import users from './data-seeder/user.js';
-import candidates from './data-seeder/candidate.js';
-import User from './models/User.js';
-import Candidate from './models/Candidate.js';
-import Vote from './models/Vote.js'
-import connectDB from './config/db.js';
+const users = require('./data-seeder/user');
+const candidates = require('./data-seeder/candidate');
+const User = require('./models/User');
+const Candidate = require('./models/Candidate');
+const Vote = require('./models/Vote');
+const connectDB = require('./config/db');
 
 dotenv.config();
 

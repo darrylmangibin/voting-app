@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
-import validator from 'validator';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+const mongoose = require('mongoose');
+const validator = require('validator');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema(
   {
@@ -81,9 +81,9 @@ UserSchema.virtual('vote', {
   ref: 'Vote',
   localField: '_id',
   foreignField: 'voter',
-  justOne: true
-})
+  justOne: true,
+});
 
 const User = mongoose.model('User', UserSchema);
 
-export default User;
+module.exports = User;

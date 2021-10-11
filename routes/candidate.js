@@ -1,13 +1,13 @@
-import express from 'express';
+const express = require('express');
 
-import {
+const {
   getCandidates,
   createCandidate,
   getCandidateById,
   updateCandidateById,
   deleteCandidateById,
-} from '../controllers/candidate.js';
-import { auth, admin } from '../middleware/authMiddleware.js';
+} = require('../controllers/candidate');
+const { auth, admin } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -19,4 +19,4 @@ router
   .put(auth, admin, updateCandidateById)
   .delete(auth, admin, deleteCandidateById);
 
-export default router;
+module.exports = router;

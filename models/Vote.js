@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const VoteSchema = new mongoose.Schema(
   {
@@ -23,4 +23,4 @@ const VoteSchema = new mongoose.Schema(
 
 const Vote = mongoose.model('Vote', VoteSchema);
 
-export default Vote;
+module.exports = Vote;

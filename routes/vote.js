@@ -1,10 +1,10 @@
-import express from 'express';
+const express = require('express');
 
-import { createVote } from '../controllers/vote.js';
-import { auth } from '../middleware/authMiddleware.js';
+const { createVote } = require('../controllers/vote');
+const { auth } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 router.route('/').post(auth, createVote);
 
-export default router;
+module.exports = router;

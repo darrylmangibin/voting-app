@@ -1,16 +1,16 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import colors from 'colors';
-import morgan from 'morgan';
-import path from 'path';
+const express = require('express');
+const dotenv = require('dotenv');
+const colors = require('colors');
+const morgan = require('morgan');
+const path = require('path');
 
-import connectDB from './config/db.js';
-import notFound from './middleware/notFound.js';
-import errorHandler from './middleware/errorHandler.js';
-import userRoutes from './routes/user.js';
-import profileRoutes from './routes/profile.js';
-import candidateRoutes from './routes/candidate.js';
-import voteRoutes from './routes/vote.js';
+const connectDB = require('./config/db');
+const notFound = require('./middleware/notFound');
+const errorHandler = require('./middleware/errorHandler');
+const userRoutes = require('./routes/user');
+const profileRoutes = require('./routes/profile');
+const candidateRoutes = require('./routes/candidate');
+const voteRoutes = require('./routes/vote');
 
 dotenv.config();
 

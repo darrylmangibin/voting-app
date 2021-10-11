@@ -1,5 +1,5 @@
-import asyncHandler from 'express-async-handler';
-import Candidate from '../models/Candidate.js';
+const asyncHandler = require('express-async-handler');
+const Candidate = require('../models/Candidate');
 
 const getCandidates = asyncHandler(async (req, res, next) => {
   const candidates = await Candidate.find({}).populate({
@@ -87,7 +87,7 @@ const deleteCandidateById = asyncHandler(async (req, res, next) => {
   res.status(200).json(deletedCandidate);
 });
 
-export {
+module.exports = {
   getCandidates,
   createCandidate,
   getCandidateById,

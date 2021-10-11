@@ -1,5 +1,5 @@
-import asyncHandler from 'express-async-handler';
-import User from '../models/User.js';
+const asyncHandler = require('express-async-handler');
+const User = require('../models/User');
 
 const getUsers = asyncHandler(async (req, res, next) => {
   let users = await User.find({}).select('-password');
@@ -108,7 +108,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
   res.status(200).json({ token });
 });
 
-export {
+module.exports = {
   getUsers,
   registerUser,
   getUserById,

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const CandidateSchema = new mongoose.Schema(
   {
@@ -41,4 +41,4 @@ CandidateSchema.virtual('votes', {
 
 const Candidate = mongoose.model('Candidate', CandidateSchema);
 
-export default Candidate;
+module.exports = Candidate;

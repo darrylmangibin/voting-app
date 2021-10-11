@@ -1,8 +1,8 @@
-import asyncHandler from 'express-async-handler';
+const asyncHandler = require('express-async-handler');
 
-import Vote from '../models/Vote.js';
-import User from '../models/User.js';
-import Candidate from '../models/Candidate.js';
+const Vote = require('../models/Vote');
+const User = require('../models/User');
+const Candidate = require('../models/Candidate');
 
 const createVote = asyncHandler(async (req, res, next) => {
   const { candidate } = req.body;
@@ -26,4 +26,4 @@ const createVote = asyncHandler(async (req, res, next) => {
   res.status(201).json(createdVote);
 });
 
-export { createVote };
+module.exports = { createVote };
