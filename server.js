@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import colors from 'colors';
 import morgan from 'morgan';
+import path from 'path'
 
 import connectDB from './config/db.js';
 import notFound from './middleware/notFound.js';
@@ -31,6 +32,14 @@ app.use('/api/users', userRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/candidates', candidateRoutes);
 app.use('/api/votes', voteRoutes);
+
+const __dirname = path.resolve();
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/client/build')));
+
+  app.get('*', (req, res) => res.sendFile(__dirname, 'client', 'build', 'index.html'))
+}
 
 app.use(notFound);
 app.use(errorHandler);
