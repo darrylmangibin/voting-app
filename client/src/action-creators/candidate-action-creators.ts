@@ -8,6 +8,11 @@ import {
   CandidateCreateActionRequest,
   CandidateCreateActionReset,
   CandidateCreateActionSuccess,
+  CandidateDeleteAction,
+  CandidateDeleteActionFail,
+  CandidateDeleteActionRequest,
+  CandidateDeleteActionReset,
+  CandidateDeleteActionSuccess,
   CandidateDetailsAction,
   CandidateDetailsActionFail,
   CandidateDetailsActionRequest,
@@ -263,4 +268,69 @@ export const candidateDetails =
 
 export const candidateDetailsReset = (): CandidateDetailsActionReset => ({
   type: ActionTypes.CANDIDATE_DETAILS_RESET,
+});
+
+export const candidateDelete =
+  (
+    id: CandidateInterface['_id']
+  ): ThunkAction<
+    Promise<void>,
+    RootState,
+    undefined,
+    CandidateDeleteAction | SnackBarActionOpen | CandidateListActionSuccess
+  > =>
+  async (dispatch, getState) => {
+    const token = localStorage.getItem('token');
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      dispatch<CandidateDeleteActionRequest>({
+        type: ActionTypes.CANDIDATE_DELETE_REQUEST,
+      });
+
+      const { data } = await axios.delete<CandidateInterface>(
+        `/api/candidates/${id}`,
+        config
+      );
+
+      dispatch<CandidateDeleteActionSuccess>({
+        type: ActionTypes.CANDIDATE_DELETE_SUCCESS,
+        payload: data,
+      });
+
+      dispatch<CandidateListActionSuccess>({
+        type: ActionTypes.CANDIDATE_LIST_SUCCESS,
+        payload: getState().candidateList.candidates.filter(
+          (candidate) => candidate._id !== data._id
+        ),
+      });
+
+      dispatch<SnackBarActionOpen>({
+        type: ActionTypes.SNACKBAR_OPEN,
+        message: 'Candidate successfully delete',
+        severity: 'success',
+      });
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+
+      dispatch<CandidateDeleteActionFail>({
+        type: ActionTypes.CANDIDATE_DELETE_FAIL,
+        payload: error.response?.data.message || error.message,
+      });
+
+      dispatch<SnackBarActionOpen>({
+        type: ActionTypes.SNACKBAR_OPEN,
+        message: error.response?.data.message || error.message,
+        severity: 'error',
+      });
+    }
+  };
+
+export const candidateDeleteReset = (): CandidateDeleteActionReset => ({
+  type: ActionTypes.CANDIDATE_DELETE_RESET,
 });

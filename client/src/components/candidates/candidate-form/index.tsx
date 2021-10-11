@@ -10,14 +10,16 @@ export interface CandidateFormCandidateData {
 
 interface CandidateFormProps {
   onSubmit: (candidateData: CandidateFormCandidateData) => void;
+  onDelete?: () => void;
   loading?: boolean;
   candidate?: CandidateInterface | null;
 }
 
 const CandidateForm: FC<CandidateFormProps> = ({
-  onSubmit,
+  onSubmit, 
   loading,
   candidate,
+  onDelete,
 }) => {
   const [candidateData, setCandidateData] =
     useState<CandidateFormCandidateData>({
@@ -94,14 +96,28 @@ const CandidateForm: FC<CandidateFormProps> = ({
         value={shortName}
         onChange={onChangeCandidateData}
       />
-      <Button
-        type='submit'
-        variant='contained'
-        sx={{ marginTop: '2rem' }}
-        disabled={loading}
+      <Box
+        sx={{
+          justifyContent: 'space-between',
+          marginTop: '2rem',
+          display: 'flex',
+        }}
       >
-        Submit
-      </Button>
+        <Button type='submit' variant='contained' disabled={loading}>
+          Submit
+        </Button>
+        {onDelete && (
+          <Button
+            type='button'
+            variant='contained'
+            color='error'
+            onClick={onDelete}
+            disabled={loading}
+          >
+            Delete
+          </Button>
+        )}
+      </Box>
     </Box>
   );
 };

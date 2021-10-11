@@ -8,11 +8,15 @@ import { typedUseDispatch, typedUseSelector } from 'hooks/redux-hooks';
 import { userListSelector } from 'selectors';
 
 const VotersPage: FC = () => {
-  const { userList } = typedUseDispatch();
+  const { userList, userListReset } = typedUseDispatch();
   const { users, loading } = typedUseSelector(userListSelector);
 
   useEffect(() => {
     userList();
+
+    return () => {
+      userListReset();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

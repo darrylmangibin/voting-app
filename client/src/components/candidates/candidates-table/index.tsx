@@ -8,6 +8,10 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Box,
+  Modal,
+  Typography,
+  Button,
 } from '@mui/material';
 
 import ModalContainer from 'components/modal/modal-container';
@@ -16,7 +20,11 @@ import Skeleton from 'components/skeleton';
 
 import * as routes from 'routes';
 import { CandidateInterface, UserRole } from 'interfaces';
-import { candidateUpdateSelector, userAuthSelector } from 'selectors';
+import {
+  candidateUpdateSelector,
+  userAuthSelector,
+  candidateDeleteSelector,
+} from 'selectors';
 import { typedUseSelector, typedUseDispatch } from 'hooks/redux-hooks';
 
 interface CandidatesTableProps {
@@ -26,10 +34,20 @@ interface CandidatesTableProps {
 
 const CandidatesTable: FC<CandidatesTableProps> = ({ candidates, loading }) => {
   const [openModal, setOpenModal] = useState(false);
+  const [confirmDeleteModal, setConfirmDeleteModal] = useState(false);
 
-  const { candidateUpdate, candidateUpdateReset } = typedUseDispatch();
+  const {
+    candidateUpdate,
+    candidateUpdateReset,
+    candidateDelete,
+    candidateDeleteReset,
+  } = typedUseDispatch();
   const { user } = typedUseSelector(userAuthSelector);
-  const { loading: candidateUpdateLoading } = typedUseSelector(candidateUpdateSelector)
+  const { loading: candidateUpdateLoading, success } = typedUseSelector(
+    candidateUpdateSelector
+  );
+  const { loading: candidateDeleteLoading, success: candidateDeleteSuccess } =
+    typedUseSelector(candidateDeleteSelector);
 
   const history = useHistory();
 
@@ -39,9 +57,15 @@ const CandidatesTable: FC<CandidatesTableProps> = ({ candidates, loading }) => {
     if (!openModal) {
       candidateRef.current = null;
       candidateUpdateReset();
+      candidateDeleteReset();
+    }
+
+    if (success || candidateDeleteSuccess) {
+      setOpenModal(false);
+      setConfirmDeleteModal(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openModal]);
+  }, [openModal, success, candidateDeleteSuccess]);
 
   const onSubmit = (candidateData: CandidateFormCandidateData) => {
     candidateUpdate(candidateRef.current?._id, candidateData);
@@ -102,8 +126,47 @@ const CandidatesTable: FC<CandidatesTableProps> = ({ candidates, loading }) => {
         }}
         title='Edit a Candidate'
       >
-        <CandidateForm onSubmit={onSubmit} candidate={candidateRef.current} loading={candidateUpdateLoading} />
+        <CandidateForm
+          onSubmit={onSubmit}
+          candidate={candidateRef.current}
+          loading={candidateUpdateLoading}
+          onDelete={() => setConfirmDeleteModal(true)}
+        />
       </ModalContainer>
+
+      <Modal
+        open={confirmDeleteModal}
+        onClose={() => setConfirmDeleteModal(false)}
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            border: '2px solid #000',
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography id='modal-modal-title' variant='body1' gutterBottom>
+            Are you sure to delete this candidate?
+          </Typography>
+          <Box textAlign='right'>
+            <Button
+              color='primary'
+              onClick={() => candidateDelete(candidateRef.current?._id)}
+              disabled={candidateDeleteLoading}
+            >
+              Confirm
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </>
   );
 };

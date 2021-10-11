@@ -90,3 +90,25 @@ export type CandidateDetailsAction =
   | CandidateDetailsActionSuccess
   | CandidateDetailsActionFail
   | CandidateDetailsActionReset;
+
+  export interface CandidateDeleteActionRequest
+  extends Action<typeof ActionTypes.CANDIDATE_DELETE_REQUEST> {}
+
+export interface CandidateDeleteActionSuccess
+  extends Action<typeof ActionTypes.CANDIDATE_DELETE_SUCCESS> {
+  payload: CandidateInterface;
+}
+
+export interface CandidateDeleteActionFail
+  extends Action<typeof ActionTypes.CANDIDATE_DELETE_FAIL> {
+  payload?: string;
+}
+
+export interface CandidateDeleteActionReset
+  extends Action<typeof ActionTypes.CANDIDATE_DELETE_RESET> {}
+
+export type CandidateDeleteAction =
+  | CandidateDeleteActionRequest
+  | CandidateDeleteActionSuccess
+  | CandidateDeleteActionFail
+  | CandidateDeleteActionReset;

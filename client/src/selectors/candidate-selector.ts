@@ -20,3 +20,8 @@ export const candidateDetailsSelector = createSelector(
   [(state: RootState) => state],
   (state) => state.candidateDetails
 );
+
+export const candidateDeleteSelector = createSelector(
+  [(state: RootState) => state],
+  (state) => state.candidateDelete
+);

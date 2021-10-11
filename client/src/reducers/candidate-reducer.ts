@@ -4,6 +4,7 @@ import * as ActionTypes from 'action-types';
 import { CandidateInterface } from 'interfaces';
 import {
   CandidateCreateAction,
+  CandidateDeleteAction,
   CandidateDetailsAction,
   CandidateListAction,
   CandidateUpdateAction,
@@ -144,6 +145,40 @@ export const candidateDetailsReducer: Reducer<
         error: action.payload,
       };
     case ActionTypes.CANDIDATE_DETAILS_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+interface CandidateDeleteState extends CandidateInitialState {
+  candidate?: CandidateInterface;
+}
+
+export const candidateDeleteReducer: Reducer<
+  CandidateDeleteState,
+  CandidateDeleteAction
+> = (state = {}, action) => {
+  switch (action.type) {
+    case ActionTypes.CANDIDATE_DELETE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ActionTypes.CANDIDATE_DELETE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        candidate: action.payload,
+        success: true,
+      };
+    case ActionTypes.CANDIDATE_DELETE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case ActionTypes.CANDIDATE_DELETE_RESET:
       return {};
     default:
       return state;

@@ -347,4 +347,5 @@ export const logoutUser = () => (dispatch: Dispatch) => {
 
   dispatch({ type: ActionTypes.USER_LOGOUT });
   dispatch({ type: ActionTypes.USER_REGISTER_RESET });
+  dispatch({ type: ActionTypes.USER_LIST_RESET });
 };

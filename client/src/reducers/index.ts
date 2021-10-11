@@ -13,6 +13,7 @@ import {
   candidateCreateReducer,
   candidateUpdateReducer,
   candidateDetailsReducer,
+  candidateDeleteReducer,
 } from './candidate-reducer';
 import { voteCreateReducer } from './vote-reducer'
 import { snackbarReducer } from './snackbar-reducer';
@@ -30,6 +31,7 @@ const reducers = combineReducers({
   candidateCreate: candidateCreateReducer,
   candidateUpdate: candidateUpdateReducer,
   candidateDetails: candidateDetailsReducer,
+  candidateDelete: candidateDeleteReducer,
   // VOTE
   voteCreate: voteCreateReducer,
   // SNACKBAR
