@@ -33,8 +33,6 @@ app.use('/api/profile', profileRoutes);
 app.use('/api/candidates', candidateRoutes);
 app.use('/api/votes', voteRoutes);
 
-const __dirname = path.resolve();
-
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/client/build')));
 
