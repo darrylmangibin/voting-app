@@ -67,6 +67,13 @@ UserSchema.pre('save', async function (next) {
 UserSchema.methods.generateToken = function () {
   const payload = {
     id: this.id,
+    email: this.email,
+    firstName: this.firstName,
+    lastName: this.lastName,
+    role: this.role,
+    createdAt: this.createdAt,
+    updatedAt: this.updatedAt,
+    _id: this._id,
   };
 
   return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '30d' });

@@ -34,7 +34,7 @@ export const userAuthReducer: Reducer<
       };
     case ActionTypes.USER_AUTH_SUCCESS:
       return {
-        loading: true,
+        loading: false,
         user: action.payload,
         auth: true,
       };

@@ -21,9 +21,9 @@ const PrivateRoute: FC<PrivateRouteProps> = ({
       render={(props) => {
         if (!auth) {
           return <Redirect to={routes.LOGIN_ROUTE} />;
+        } else {
+          return <Component {...props} />;
         }
-
-        return <Component {...props} />;
       }}
     />
   );

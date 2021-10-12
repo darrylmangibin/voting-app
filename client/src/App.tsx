@@ -5,7 +5,10 @@ import {
   Switch,
   Redirect,
 } from 'react-router-dom';
+import jwt from 'jsonwebtoken';
+import jwt_decode from 'jwt-decode';
 import { useSelector } from 'react-redux';
+import store from 'store';
 
 import LoginPage from 'pages/login-page';
 import RegisterPage from 'pages/register-page';
@@ -19,19 +22,24 @@ import * as routes from 'routes';
 import SnackbarNotification from 'components/snackbar-notification';
 
 import { RootState } from 'reducers';
-import { typedUseDispatch } from 'hooks/redux-hooks';
+import * as ActionTypes from 'action-types';
+import { UserInterface } from 'interfaces';
+
+const token = localStorage.getItem('token');
+
+if (token) {
+  const decoded = jwt_decode<UserInterface>(token);
+
+  store.dispatch({
+    type: ActionTypes.USER_AUTH_SUCCESS,
+    payload: decoded,
+  });
+}
 
 const App: FC = () => {
   const { open, message, severity } = useSelector(
     (state: RootState) => state.snackbar
   );
-
-  const { userAuth } = typedUseDispatch();
-
-  useEffect(() => {
-    userAuth();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <Router>
@@ -61,7 +69,6 @@ const App: FC = () => {
           />
         </Layout>
       </Switch>
-      <Redirect to={routes.LOGIN_ROUTE} />
       <SnackbarNotification
         message={message ?? ''}
         open={open}
