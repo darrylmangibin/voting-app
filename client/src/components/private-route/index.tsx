@@ -13,13 +13,13 @@ const PrivateRoute: FC<PrivateRouteProps> = ({
   component: Component,
   ...rest
 }) => {
-  const { auth } = typedUseSelector(userAuthSelector);
+  const { auth, loading } = typedUseSelector(userAuthSelector);
 
   return (
     <Route
       {...rest}
       render={(props) => {
-        if (!auth) {
+        if (!auth && !loading) {
           return <Redirect to={routes.LOGIN_ROUTE} />;
         } else {
           return <Component {...props} />;

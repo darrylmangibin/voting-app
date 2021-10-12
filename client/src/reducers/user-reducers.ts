@@ -26,7 +26,7 @@ interface UserAuthState extends UserInitialState {
 export const userAuthReducer: Reducer<
   UserAuthState,
   UserAuthAction | UserLogoutAction
-> = (state = {}, action) => {
+> = (state = { loading: true }, action) => {
   switch (action.type) {
     case ActionTypes.USER_AUTH_REQUEST:
       return {
